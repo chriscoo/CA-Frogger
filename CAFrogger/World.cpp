@@ -30,9 +30,9 @@ namespace GEX {
 		_worldView(window.getDefaultView()),
 		_sceneGraph(),
 		_sceneLayers(),
-		_worldBounds(0.f, 0.f, _worldView.getSize().x, 2000.f),
+		_worldBounds(0.f, 0.f, _worldView.getSize().x, _worldView.getSize().y),
 		_spawnPosition(_worldView.getSize().x / 2.f, _worldBounds.height - (_worldView.getSize().y / 2)),
-		_scrollSpeed(-50.0f),
+		_scrollSpeed(0),
 		_queue(),
 		_soundPlayer(soundPlayer),
 		_playerAircraft(nullptr)
@@ -56,27 +56,27 @@ namespace GEX {
 		//_worldView.rotate(0.001); //spins!
 
 		//backgorund
-		_worldView.move(0.f, _scrollSpeed * deltaTime.asSeconds()); // moves the view which moves the background moves and not the planes
+		//_worldView.move(0.f, _scrollSpeed * deltaTime.asSeconds()); // moves the view which moves the background moves and not the planes
 
-		_playerAircraft->setVelocity(0.f, 0.f);
+		//_playerAircraft->setVelocity(0.f, 0.f);
 		
-		guideMissiles();
+		//guideMissiles();
 		
-		destroyEntitiesOutsideWorldView();
+		//destroyEntitiesOutsideWorldView();
 		
 		while (!_queue.isEmpty())
 		{
 			_sceneGraph.onCommand(_queue.pop(), sf::Time::Zero);
 		}
 
-		handleCollisions();
+		//handleCollisions();
 
-		_sceneGraph.removeWrecks();
+		//_sceneGraph.removeWrecks();
 
-		spawnEnemies();
+	//	spawnEnemies();
 		//movement
 		_sceneGraph.update(deltaTime, getCommandQueue());
-		adaptPlayerPosition();
+	//	adaptPlayerPosition();
 
 	}
 	void World::draw() //creates the view 
@@ -113,50 +113,50 @@ namespace GEX {
 		//_sceneLayers[Background]->attatchChild(std::move(_background));
 
 		//background
-		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::DESERT);
-		sf::IntRect textureRect(0, 0, 2000, 4000);
-		texture.setRepeated(true);
+		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Background);
+		sf::IntRect textureRect(0, 0, 480, 600);
+		//texture.setRepeated(true);
 		//add background to sceneGraph
 		std::unique_ptr<SpriteNode> background(new SpriteNode(texture, textureRect));
-		background->setPosition(_worldBounds.left, _worldBounds.top - 2000.f);
+		background->setPosition(_worldBounds.left, _worldBounds.top);
 		_sceneLayers[Background]->attatchChild(std::move(background));
 
 
 		//finish line
-		sf::Texture& finish = TextureHolder::getInstance().get(TextureID::FinishLine);
-		sf::IntRect FinishRect(0, 0, 1024, 76);
-		std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finish, FinishRect));
-		_sceneLayers[Background]->attatchChild(std::move(finishLine));
-		//smoke behind missiles
-		std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Type::Smoke));
-		_sceneLayers[Air]->attatchChild(std::move(smokeNode));
-		//fire behind missiles
-		std::unique_ptr<ParticleNode> fireNode(new ParticleNode(Particle::Type::Propellant));
-		_sceneLayers[Air]->attatchChild(std::move(fireNode));
+		//sf::Texture& finish = TextureHolder::getInstance().get(TextureID::FinishLine);
+		//sf::IntRect FinishRect(0, 0, 1024, 76);
+		//std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finish, FinishRect));
+		//_sceneLayers[Background]->attatchChild(std::move(finishLine));
+		////smoke behind missiles
+		//std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Type::Smoke));
+		//_sceneLayers[Air]->attatchChild(std::move(smokeNode));
+		////fire behind missiles
+		//std::unique_ptr<ParticleNode> fireNode(new ParticleNode(Particle::Type::Propellant));
+		//_sceneLayers[Air]->attatchChild(std::move(fireNode));
 
 
 		std::unique_ptr<SoundNode> soundeffectNode(new SoundNode(_soundPlayer));
 		_sceneLayers[Air]->attatchChild(std::move(soundeffectNode));
 		//player plane
-		std::unique_ptr<Plane> plane(new Plane(Plane::Type::EAGLE));
-		plane->setPosition(_spawnPosition);
-		plane->setVelocity(40.f, _scrollSpeed);
-		_playerAircraft = plane.get();
-		_sceneLayers[Air]->attatchChild(std::move(plane));
-
-
-
-		addEnemies();
+		//std::unique_ptr<Plane> plane(new Plane(Plane::Type::EAGLE));
+		//plane->setPosition(_spawnPosition);
+		//plane->setVelocity(40.f, _scrollSpeed);
+		//_playerAircraft = plane.get();
+		//_sceneLayers[Air]->attatchChild(std::move(plane));
+		//
+		//
+		//
+		//addEnemies();
 	}
 	bool World::hasAlivePlayer() const
 	{
 		
-			return !_playerAircraft->isMarkedForRemoval();
+			return true;
 		
 	}
 	bool World::hasReachedFinish() const
 	{
-		return !_worldBounds.contains(_playerAircraft->getPosition());
+		return false;
 	}
 	sf::FloatRect World::getViewBounds() const //gets the windows size
 	{
