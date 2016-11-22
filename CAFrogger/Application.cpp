@@ -31,12 +31,12 @@ Additions and modifications are my sole work for prog 1266
 namespace GEX {
 	const sf::Time Application::timePerFrame = sf::seconds(1.f / 60.f);
 
-	Application::Application() : _window(sf::VideoMode(1024, 768), "states", sf::Style::Close), _player(), _stateStack(State::Context(_window, _player, _music, _soundPlayer)), _statText()
+	Application::Application() : _window(sf::VideoMode(480, 600), "states", sf::Style::Close), _player(), _stateStack(State::Context(_window, _player, _music, _soundPlayer)), _statText()
 	{
 		_window.setKeyRepeatEnabled(false);
 
 		FontHolder::getInstance().load(FontID::Main, "Media/Sansation.ttf");
-		TextureHolder::getInstance().load(TextureID::TitleScreen, "Media/Textures/TitleScreen.png");
+		TextureHolder::getInstance().load(TextureID::TitleScreen, "Media/Textures/FroggerTitle.png");
 		TextureHolder::getInstance().load(TextureID::GexLogo, "Media/Textures/face.png");
 
 		//textures for the game

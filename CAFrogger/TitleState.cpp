@@ -28,6 +28,9 @@ namespace GEX {
 
 		_text.setFont(FontHolder::getInstance().get(FontID::Main));
 		_text.setString("press any key to start");
+		sf::Color color(255,255, 255, 255);
+		_text.setFillColor(color);
+		_text.setOutlineThickness(1);
 		centerOrigin(_text);
 		_text.setPosition(context.window->getView().getSize() / 2.f);
 	}
