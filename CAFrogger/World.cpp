@@ -52,17 +52,6 @@ namespace GEX {
 	}
 	void World::update(sf::Time deltaTime)
 	{
-		//_worldView.zoom(1.00001); //goes OUT slowly
-		//_worldView.rotate(0.001); //spins!
-
-		//backgorund
-		//_worldView.move(0.f, _scrollSpeed * deltaTime.asSeconds()); // moves the view which moves the background moves and not the planes
-
-		//_playerAircraft->setVelocity(0.f, 0.f);
-		
-		//guideMissiles();
-		
-		//destroyEntitiesOutsideWorldView();
 		
 		while (!_queue.isEmpty())
 		{
@@ -71,10 +60,7 @@ namespace GEX {
 
 		//handleCollisions();
 
-		//_sceneGraph.removeWrecks();
 
-	//	spawnEnemies();
-		//movement
 		_sceneGraph.update(deltaTime, getCommandQueue());
 	//	adaptPlayerPosition();
 

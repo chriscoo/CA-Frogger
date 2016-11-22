@@ -25,14 +25,14 @@ namespace GEX
 			 SceneNode(),
 			_soundPlayer(player)
 	{
-		std::cout << "SoundNode CTOR" << std::endl;
+		//std::cout << "SoundNode CTOR" << std::endl;
 	}
 
 	void SoundNode::playSound(SoundEffectID sound, sf::Vector2f position)
 	{
 		if(this->getCategory() & Category::SoundEffect)
 		{
-			std::cout << "Category SoundEffects " << std::endl;
+		//	std::cout << "Category SoundEffects " << std::endl;
 			_soundPlayer.play(sound, position);
 		}
 	}
