@@ -72,7 +72,7 @@ namespace GEX {
 
 		};
 		void addEnemy(SpawnPoint point);
-
+		//comment to commit
 		sf::RenderWindow&					_window;
 		sf::View							_worldView;
 		SceneNode							_sceneGraph;
