@@ -86,7 +86,7 @@ namespace GEX {
 		std::vector<SpawnPoint>				_enemySpawnPoints;
 		std::vector<Plane*>					_activeEnemies;
 
-
+		int									_lives;
 
 	};
 }

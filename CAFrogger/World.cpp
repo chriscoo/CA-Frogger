@@ -36,7 +36,8 @@ namespace GEX {
 		_scrollSpeed(0),
 		_queue(),
 		_soundPlayer(soundPlayer),
-		_playerAircraft(nullptr)
+		_playerAircraft(nullptr),
+		_lives(3)
 	{
 
 		buildScene();
