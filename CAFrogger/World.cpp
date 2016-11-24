@@ -62,7 +62,7 @@ namespace GEX {
 
 		//handleCollisions();
 
-
+		drawLives();
 		_sceneGraph.update(deltaTime, getCommandQueue());
 	//	adaptPlayerPosition();
 
@@ -309,6 +309,21 @@ namespace GEX {
 		position.y = std::max(position.y, viewBounds.top + borderDistance);
 		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
 		_playerAircraft->setPosition(position);
+	}
+	void World::drawLives()
+	{
+
+
+		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Atlas);
+		sf::IntRect textureRect(395,100, 39, 40);
+		sf::Vector2f pos(_worldBounds.width, _worldBounds.top);
+		for (int i = 1; i < _lives; i++)
+		{
+			std::unique_ptr<SpriteNode> frogLives(new SpriteNode(texture, textureRect));
+			frogLives->setPosition(pos.x - 50, pos.y);
+			_sceneLayers[Background]->attatchChild(std::move(frogLives));
+			pos.x = pos.x - 50;
+		}
 	}
 void World::addEnemy(SpawnPoint point) //puts the planes onto the vetor
 {
