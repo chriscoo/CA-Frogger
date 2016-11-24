@@ -163,6 +163,15 @@
 	"pivot": {"x":0.5,"y":0.5}
 },
 {
+	"filename": "down 3.png",
+	"frame": {"x":26,"y":1,"w":33,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":8,"w":33,"h":23},
+	"sourceSize": {"w":40,"h":40},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
 	"filename": "frogIcon.png",
 	"frame": {"x":395,"y":100,"w":39,"h":40},
 	"rotated": false,
@@ -186,6 +195,15 @@
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":3,"w":32,"h":34},
+	"sourceSize": {"w":40,"h":40},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "left 3.png",
+	"frame": {"x":274,"y":62,"w":23,"h":33},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":3,"w":23,"h":33},
 	"sourceSize": {"w":40,"h":40},
 	"pivot": {"x":0.5,"y":0.5}
 },
@@ -231,6 +249,15 @@
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":4,"y":3,"w":32,"h":34},
+	"sourceSize": {"w":40,"h":40},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "right 3.png",
+	"frame": {"x":249,"y":62,"w":23,"h":33},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":8,"y":3,"w":23,"h":33},
 	"sourceSize": {"w":40,"h":40},
 	"pivot": {"x":0.5,"y":0.5}
 },
@@ -285,6 +312,17 @@
 	"rotated": false,
 	"trimmed": true,
 	"spriteSourceSize": {"x":3,"y":4,"w":34,"h":32},
+	"sourceSize": {"w":40,"h":40},
+	"pivot": {"x":0.5,"y":0.5}
+	
+	
+}
+{
+	"filename": "up 3.png",
+	"frame": {"x":61,"y":1,"w":33,"h":23},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":8,"w":33,"h":23},
 	"sourceSize": {"w":40,"h":40},
 	"pivot": {"x":0.5,"y":0.5}
 }],

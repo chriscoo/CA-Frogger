@@ -64,24 +64,24 @@ namespace GEX {
 
 	}
 
-	unsigned int Plane::getCategory() const
-	{
-		switch (_type) //sets the correct category for the different types of airplanes
-		{
-		case GEX::Plane::Type::EAGLE:
-			return Category::playerAircraft;
-
-		case GEX::Plane::Type::RAPTOR:
-			return Category::EnemyAircraft;
-
-		case GEX::Plane::Type::AVENGER:
-			return Category::EnemyAircraft;
-		default:
-			assert(0); //missing type
-
-		}
-
-	}
+	//unsigned int Plane::getCategory() const
+	//{
+	//	switch (_type) //sets the correct category for the different types of airplanes
+	//	{
+	//	case GEX::Plane::Type::EAGLE:
+	//		return Category::playerAircraft;
+	//
+	//	case GEX::Plane::Type::RAPTOR:
+	//		return Category::EnemyAircraft;
+	//
+	//	case GEX::Plane::Type::AVENGER:
+	//		return Category::EnemyAircraft;
+	//	default:
+	//		assert(0); //missing type
+	//
+	//	}
+	//
+	//}
 
 	void Plane::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
 	{
