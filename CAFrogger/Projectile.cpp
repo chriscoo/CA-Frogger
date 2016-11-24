@@ -47,24 +47,24 @@ namespace GEX {
 		}
 	}
 
-	unsigned int Projectile::getCategory() const //to find out who the bullets should damage
-	{
-		switch (_type)
-		{
-		case GEX::Projectile::Type::AlliedBullet:
-			return Category::AlliedProjectile;
-			break;
-		case GEX::Projectile::Type::EnemyBullet:
-			return Category::EnemyProjectile;
-			break;
-		case GEX::Projectile::Type::Missle:
-			return Category::AlliedProjectile;
-			break;
-		default:
-			break;
-		}	
-		
-	}
+	//unsigned int Projectile::getCategory() const //to find out who the bullets should damage
+	//{
+	//	switch (_type)
+	//	{
+	//	case GEX::Projectile::Type::AlliedBullet:
+	////		return Category::AlliedProjectile;
+	////		break;
+	////	case GEX::Projectile::Type::EnemyBullet:
+	////		return Category::EnemyProjectile;
+	////		break;
+	////	case GEX::Projectile::Type::Missle:
+	////		return Category::AlliedProjectile;
+	////		break;
+	////	default:
+	////		break;
+	////	}	
+	//	
+	//}
 
 
 float Projectile::getMaxSpeed() const //gets the bullets/missiles speed

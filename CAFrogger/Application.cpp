@@ -37,21 +37,9 @@ namespace GEX {
 
 		FontHolder::getInstance().load(FontID::Main, "Media/Sansation.ttf");
 		TextureHolder::getInstance().load(TextureID::TitleScreen, "Media/Textures/FroggerTitle.png");
-		//TextureHolder::getInstance().load(TextureID::GexLogo, "Media/Textures/face.png");
-
-		//textures for the game
-		//TextureHolder::getInstance().load(TextureID::AIRPLANE, "Media/Textures/Entities.png");
-		//TextureHolder::getInstance().load(TextureID::RAPTOR, "Media/Textures/Entities.png");
 		TextureHolder::getInstance().load(TextureID::Background, "Media/Textures/background.png");
-		//TextureHolder::getInstance().load(TextureID::MISSLE, "Media/Textures/Entities.png");
-		//TextureHolder::getInstance().load(TextureID::BULLET, "Media/Textures/Entities.png");
-		//TextureHolder::getInstance().load(TextureID::FireRate, "Media/Textures/Entities.png");
-		//TextureHolder::getInstance().load(TextureID::FireSpread, "Media/Textures/Entities.png");
-		//TextureHolder::getInstance().load(TextureID::MissileRefill, "Media/Textures/Entities.png");
-		//TextureHolder::getInstance().load(TextureID::HealthRefill, "Media/Textures/Entities.png");
-		//TextureHolder::getInstance().load(TextureID::Explosion, "Media/Textures/Explosion.png");
-		//TextureHolder::getInstance().load(TextureID::FinishLine, "Media/Textures/FinishLine.png");
-		//TextureHolder::getInstance().load(TextureID::PARTICLE, "Media/Textures/Particle.png");
+		TextureHolder::getInstance().load(TextureID::Frog, "Media/Textures/FroggerAtlas.png");
+
 		_statText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statText.setPosition(5.f, 5.f);
 		_statText.setCharacterSize(10u);

@@ -21,19 +21,16 @@ namespace GEX {
 		enum type {
 			none = 0,
 			SceneAirLayer = 1 << 0,
-			playerAircraft = 1 << 1,
-			AlliedAircraft = 1 << 2,
-			EnemyAircraft = 1 << 3,
-			AlliedProjectile = 1 << 4,
-			EnemyProjectile = 1 << 5,
-			PickUp = 1 << 6,
-			ParticleSystem = 1 << 7,
-			SoundEffect = 1 << 8,
+			Frog = 1 << 1,
+			Log = 1 << 2,
+			Turtle = 1 << 3,
+			LandingZone = 1 << 4,
+			ParticleSystem = 1 << 5,
+			SoundEffect = 1 << 6,
+			
 
-			Plane = playerAircraft | AlliedAircraft | EnemyAircraft,
-			Projectile = EnemyProjectile | AlliedProjectile,
-			ThingsPlayerCollidesWith = EnemyAircraft | EnemyProjectile | PickUp,
-			ThingsEnemyCollidesWith = AlliedAircraft | playerAircraft | AlliedProjectile
+			ThingsPlayerCollidesWith = Log | Turtle | LandingZone,
+			ThingsEnemyCollidesWith = Frog
 		};
 
 	}

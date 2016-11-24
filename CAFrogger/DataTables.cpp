@@ -111,7 +111,7 @@ namespace GEX {
 		std::map<Particle::Type, ParticleData> data;
 
 		//data[Particle::Type::Propellant].texture = TextureID::PARTICLE;
-		data[Particle::Type::Propellant].lifeTime = sf::seconds(0.6);
+		data[Particle::Type::Propellant].lifeTime = sf::seconds(0.6f);
 		data[Particle::Type::Propellant].color = sf::Color(255, 255, 50);
 
 		//	data[Particle::Type::Smoke].texture = TextureID::PARTICLE;

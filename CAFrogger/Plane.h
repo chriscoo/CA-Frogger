@@ -34,7 +34,7 @@ namespace GEX {
 	public:
 						Plane(Type type = Type::EAGLE);
 		virtual			~Plane() {};
-		unsigned int	getCategory() const override; //sets the correct category for the different types of airplanes
+		//unsigned int	getCategory() const override; //sets the correct category for the different types of airplanes
 		void			drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const; //draws the current instance of plane
 		void			updateCurrent(sf::Time dt, CommandQueue& commands);
 		void			updateTexts();

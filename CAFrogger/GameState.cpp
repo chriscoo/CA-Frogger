@@ -24,7 +24,7 @@ namespace GEX {
 
 
 
-	GameState::GameState(StateStack & stack, Context context) : State(stack, context), _world(*context.window, *context.soundEffects), _player(*context.player) { context.music->play(MusicID::Missiontheme); }
+	GameState::GameState(StateStack & stack, Context context) : State(stack, context), _world(*context.window, *context.soundEffects), _player(*context.player) {} //context.music->play(MusicID::Missiontheme); 
 
 	void GameState::draw()
 	{

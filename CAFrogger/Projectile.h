@@ -36,7 +36,7 @@ namespace GEX {
 	public:
 		Projectile(Type type);
 
-		unsigned int getCategory() const override;
+		//unsigned int getCategory() const override;
 		float getMaxSpeed() const;
 		bool isGuided() const;
 		void guideTowards(sf::Vector2f position);

@@ -26,7 +26,7 @@ Additions and modifications are my sole work for prog 1266
 #include "SoundPlayer.h"
 namespace GEX {
 
-	class Plane;
+	class Frog;
 	
 	class World
 	{
@@ -82,7 +82,7 @@ namespace GEX {
 		sf::FloatRect						_worldBounds;
 		sf::Vector2f						_spawnPosition;
 		float								_scrollSpeed;
-		Plane*								_playerAircraft;
+		Frog*								_playerAircraft;
 		std::vector<SpawnPoint>				_enemySpawnPoints;
 		std::vector<Plane*>					_activeEnemies;
 

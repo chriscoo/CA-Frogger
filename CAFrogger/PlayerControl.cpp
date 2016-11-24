@@ -16,31 +16,22 @@ Additions and modifications are my sole work for prog 1266
 */
 
 #include "PlayerControl.h"
-#include "Plane.h"
+#include "Frog.h"
 #include "Category.h"
 
 namespace GEX {
-	struct AircraftMover{ //to move the aircraftk
+	struct FrogMover{ //to move the aircraftk
 	
-		AircraftMover(float vx, float vy) : velocity(vx, vy){}
-		void operator() (Plane& plane, sf::Time) const {
-			plane.accelerate(velocity);
+		FrogMover(float vx, float vy) : velocity(vx, vy){}
+		void operator() (Frog& frog, sf::Time) const {
+			frog.setPosition(frog.getPosition().x + velocity.x, frog.getPosition().y + velocity.y);
 		}
 
 		sf::Vector2f velocity;
 	
 	};
 
-	struct AircraftSpinner {//to spin the plane(not currently implemented)
-
-		AircraftSpinner(float vSpeed) : rotation(vSpeed) {}
-		void operator() (Plane& plane, sf::Time) const {
-			plane.angularAccelerate(rotation);
-		}
-
-		float rotation;
-
-	};
+	
 	PlayerControl::PlayerControl() : _missionStatus(missionStatus::Active)
 	{
 		
@@ -81,17 +72,7 @@ namespace GEX {
 	}
 	bool PlayerControl::isRealTimeAction(Action action)
 	{
-		switch (action)
-		{
-		case Action::moveDown:
-		case Action::moveLeft:
-		case Action::moveRight:
-		case Action::moveUp:
-			return true;
-		default:
-			return false;
-			break;
-		}
+		return false;
 	}
 	void PlayerControl::initalizeKeyBindings()
 	{
@@ -100,8 +81,8 @@ namespace GEX {
 		_keyBindings[sf::Keyboard::Right] = Action::moveRight;
 		_keyBindings[sf::Keyboard::Up] = Action::moveUp;
 		_keyBindings[sf::Keyboard::Down] = Action::moveDown;
-		_keyBindings[sf::Keyboard::Space]= Action::fireBullet;
-		_keyBindings[sf::Keyboard::RControl] = Action::fireMissle;
+		//_keyBindings[sf::Keyboard::Space]= Action::fireBullet;
+		//_keyBindings[sf::Keyboard::RControl] = Action::fireMissle;
 	}
 
 	void PlayerControl::initalizeActionBindings()
@@ -109,16 +90,16 @@ namespace GEX {
 		const float playerSpeed = 200.f;
 		const float spinSpeed = 10.f;
 
-		_actionBindings[Action::moveLeft].action = derivedAction<Plane>(AircraftMover(-playerSpeed, 0));
-		_actionBindings[Action::moveRight].action = derivedAction<Plane>(AircraftMover(playerSpeed, 0));
-		_actionBindings[Action::moveUp].action = derivedAction<Plane>(AircraftMover(0, -playerSpeed));
-		_actionBindings[Action::moveDown].action = derivedAction<Plane>(AircraftMover(0, playerSpeed));
-		_actionBindings[Action::fireBullet].action = derivedAction<Plane>([](Plane& a, sf::Time& dt) {return a.fireBullet(); });
-		_actionBindings[Action::fireMissle].action = derivedAction<Plane>([](Plane& a, sf::Time& dt) {return a.fireMissle(); });
+		_actionBindings[Action::moveLeft].action = derivedAction<Frog>(FrogMover(-40, 0));
+		_actionBindings[Action::moveRight].action = derivedAction<Frog>(FrogMover(40, 0));
+		_actionBindings[Action::moveUp].action = derivedAction<Frog>(FrogMover(0, -40));
+		_actionBindings[Action::moveDown].action = derivedAction<Frog>(FrogMover(0, 40));
+		//_actionBindings[Action::fireBullet].action = derivedAction<Plane>([](Plane& a, sf::Time& dt) {return a.fireBullet(); });
+		//_actionBindings[Action::fireMissle].action = derivedAction<Plane>([](Plane& a, sf::Time& dt) {return a.fireMissle(); });
 
 
 		for (auto& pair : _actionBindings)
-			pair.second.category = Category::playerAircraft;
+			pair.second.category = Category::Frog;
 	}
 
 

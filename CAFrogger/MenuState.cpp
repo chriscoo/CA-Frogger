@@ -51,7 +51,7 @@ namespace GEX {
 		exitOption.setPosition(playOption.getPosition() + sf::Vector2f(0.f, 30.f));
 		_options.push_back(exitOption);
 
-		context.music->play(MusicID::MenuTheme);
+		//context.music->play(MusicID::MenuTheme);
 
 		updateOptionText();
 	}
