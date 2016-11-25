@@ -324,6 +324,10 @@ namespace GEX {
 			_sceneLayers[Background]->attatchChild(std::move(frogLives));
 			pos.x = pos.x - 50;
 		}
+
+		std::unique_ptr<TextNode> HealthDisplay(new TextNode("Lives :"));
+		HealthDisplay->setPosition(pos.x-40, pos.y+20);
+		_sceneLayers[Background]->attatchChild(std::move(HealthDisplay));
 	}
 void World::addEnemy(SpawnPoint point) //puts the planes onto the vetor
 {

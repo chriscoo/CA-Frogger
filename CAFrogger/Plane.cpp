@@ -59,7 +59,7 @@ namespace GEX {
 		_dropPickupCommand.category = Category::SceneAirLayer;
 		_dropPickupCommand.action = [this](SceneNode& node, sf::Time)
 		{
-			createPickup(node);
+			this->createPickup(node);
 		};
 
 	}
