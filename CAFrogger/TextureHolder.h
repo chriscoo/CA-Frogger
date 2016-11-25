@@ -20,7 +20,7 @@ Additions and modifications are my sole work for prog 1266
 #include <map>
 namespace GEX
 {
-	enum class TextureID {AIRPLANE=0, RAPTOR, AVENGER, MISSLE, BULLET, DESERT, PARTICLE, TitleScreen, GexLogo, FireRate, FireSpread, HealthRefill, MissileRefill, Explosion, FinishLine, Background, Frog
+	enum class TextureID {AIRPLANE=0, RAPTOR, AVENGER, MISSLE, BULLET, DESERT, PARTICLE, TitleScreen, GexLogo, FireRate, FireSpread, HealthRefill, MissileRefill, Explosion, FinishLine, Background, Atlas
 	};
 
 	class TextureHolder

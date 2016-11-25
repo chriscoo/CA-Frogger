@@ -57,6 +57,7 @@ namespace GEX {
 		void handleCollisions();
 		void destroyEntitiesOutsideWorldView();
 		void adaptPlayerPosition();
+		void drawLives();
 		
 		enum _Layers
 		{
@@ -72,7 +73,7 @@ namespace GEX {
 
 		};
 		void addEnemy(SpawnPoint point);
-
+		
 		sf::RenderWindow&					_window;
 		sf::View							_worldView;
 		SceneNode							_sceneGraph;

@@ -9,7 +9,7 @@
 //#include "JsonFrameParser.hpp"
 
 namespace GEX {
-	Frog::Frog() : Entity(1), _player(TextureHolder::getInstance().get(TextureID::Frog)), _directionIndex(0), _travelDistance(0), _isMarkedForRemoval(false), _playedMovementSound(true), _playedDeathSound(true), _state()
+	Frog::Frog() : Entity(1), _player(TextureHolder::getInstance().get(TextureID::Atlas)), _directionIndex(0), _travelDistance(0), _isMarkedForRemoval(false), _playedMovementSound(true), _playedDeathSound(true), _state()
 	{
 		sf::IntRect rect(62,0,30,22);
 		_player.setTextureRect(rect);
