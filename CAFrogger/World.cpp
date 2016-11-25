@@ -62,13 +62,14 @@ namespace GEX {
 
 		//handleCollisions();
 
-		drawLives();
+		
 		_sceneGraph.update(deltaTime, getCommandQueue());
 	//	adaptPlayerPosition();
 
 	}
 	void World::draw() //creates the view 
 	{
+		drawLives();
 		_window.setView(_worldView);
 		_window.draw(_sceneGraph);
 	}
