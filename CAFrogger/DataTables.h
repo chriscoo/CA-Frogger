@@ -23,6 +23,7 @@ Additions and modifications are my sole work for prog 1266
 #include "Pickup.h"
 #include "Utility.h"
 #include "Vehicle.h"
+#include "Log.h"
 #include <map>
 #include <vector>
 namespace GEX {
@@ -66,13 +67,19 @@ namespace GEX {
 
 	};
 	struct VehicleData {
-		//TextureID					texture;
-		//sf::IntRect					textureRect;
+		
 		sf::IntRect					textureRect;
 		float						speed;
 
 	};
 
+	struct LogData {
+		sf::IntRect					textureRect;
+		float						speed;
+
+	};
+
+	std::map<Log::Type, LogData> InitializeLogData();
 	std::map<Vehicle::Type, VehicleData> InitializeVehicleData();
 	std::map<Plane::Type, AircraftData> InitializeAircraftData();
 	std::map<Projectile::Type, ProjectileData> InitializeProjectileData();

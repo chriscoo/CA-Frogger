@@ -28,6 +28,12 @@ namespace GEX {
 		void			setVelocity(float vx, float vy);
 		sf::Vector2f	getVelocity() const;
 
+		void setSpawn(sf::Vector2f spawn);
+
+		void setSpawn(float vx, float vy);
+
+		sf::Vector2f getSpawn() const;
+
 		void			accelerate(sf::Vector2f velocity);
 		void			accelerate(float vx, float vy);
 		
@@ -48,6 +54,7 @@ namespace GEX {
 		int					_hitPoints;
 		float			_angularVelocity = 0;
 		sf::Vector2f	_velocity;
+		sf::Vector2f	_spawn;
 	};
 }
 
