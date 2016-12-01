@@ -41,6 +41,26 @@ namespace GEX {
 
 		return data;
 	}
+
+	std::map<Log::Type, LogData> InitializeLogData()
+	{
+		std::map<Log::Type, LogData> data;
+
+		data[Log::Type::ShortL].speed = -40.f;
+		data[Log::Type::ShortL].textureRect = sf::IntRect(198,31,93,29);
+
+		data[Log::Type::ShortR].speed = 40.f;
+		data[Log::Type::ShortL].textureRect = sf::IntRect(198, 31, 93, 29);
+
+		data[Log::Type::LongL].speed = -40.f;
+		data[Log::Type::LongL].textureRect = sf::IntRect(1,31,195,28);
+
+		data[Log::Type::LongR].speed = 40.f;
+		data[Log::Type::LongR].textureRect = sf::IntRect(1, 31, 195, 28);
+
+
+		return data;
+	}
 	//planes
 	std::map<Plane::Type, AircraftData> GEX::InitializeAircraftData()
 	{
