@@ -19,7 +19,7 @@ namespace GEX {
 	}
 	unsigned int Log::getCategory() const
 	{
-		return Category::Car;
+		return Category::Log;
 	}
 
 	void Log::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const

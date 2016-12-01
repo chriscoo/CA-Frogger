@@ -19,7 +19,7 @@ Additions and modifications are my sole work for prog 1266
 
 
 namespace GEX {
-	Entity::Entity(int hitpoints) : _hitPoints(hitpoints), _velocity(), _angularVelocity()
+	Entity::Entity(int hitpoints) : _hitPoints(hitpoints), _velocity(), _angularVelocity(), _spawn()
 	{
 	}
 
@@ -38,6 +38,19 @@ namespace GEX {
 	sf::Vector2f Entity::getVelocity() const
 	{
 		return _velocity;
+	}
+
+	void Entity::setSpawn(sf::Vector2f spawn)
+	{
+		_spawn = spawn;
+	}
+	void Entity::setSpawn(float vx, float vy)
+	{
+		_spawn = sf::Vector2f(vx, vy);
+	}
+	sf::Vector2f Entity::getSpawn() const
+	{
+		return _spawn;
 	}
 
 	void Entity::accelerate(sf::Vector2f velocity)

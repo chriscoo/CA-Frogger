@@ -23,19 +23,19 @@ namespace GEX {
 	{
 		std::map<Vehicle::Type, VehicleData> data;
 
-		data[Vehicle::Type::CarL].speed = 40.f;
+		data[Vehicle::Type::CarL].speed = 50.f;
 		data[Vehicle::Type::CarL].textureRect = sf::IntRect(69, 100, 37, 37);
 
-		data[Vehicle::Type::CarR].speed = -40.f;
+		data[Vehicle::Type::CarR].speed = -50.f;
 		data[Vehicle::Type::CarR].textureRect = sf::IntRect(139, 100, 38, 39);
 
 		data[Vehicle::Type::RaceCar].speed = -60.f;
 		data[Vehicle::Type::RaceCar].textureRect = sf::IntRect(1, 62, 35, 29);
 
-		data[Vehicle::Type::Tractor].speed = 25.f;
+		data[Vehicle::Type::Tractor].speed = 35.f;
 		data[Vehicle::Type::Tractor].textureRect = sf::IntRect(214, 62, 33, 33);
 
-		data[Vehicle::Type::Truck].speed = -25.f;
+		data[Vehicle::Type::Truck].speed = -35.f;
 		data[Vehicle::Type::Truck].textureRect = sf::IntRect(293, 1, 61, 28);
 
 
@@ -46,17 +46,13 @@ namespace GEX {
 	{
 		std::map<Log::Type, LogData> data;
 
-		data[Log::Type::ShortL].speed = -40.f;
-		data[Log::Type::ShortL].textureRect = sf::IntRect(198,31,93,29);
+	
 
-		data[Log::Type::ShortR].speed = 40.f;
-		data[Log::Type::ShortL].textureRect = sf::IntRect(198, 31, 93, 29);
+		data[Log::Type::Short].speed = 60.f;
+		data[Log::Type::Short].textureRect = sf::IntRect(198, 31, 93, 29);
 
-		data[Log::Type::LongL].speed = -40.f;
-		data[Log::Type::LongL].textureRect = sf::IntRect(1,31,195,28);
-
-		data[Log::Type::LongR].speed = 40.f;
-		data[Log::Type::LongR].textureRect = sf::IntRect(1, 31, 195, 28);
+		data[Log::Type::Long].speed = 90.f;
+		data[Log::Type::Long].textureRect = sf::IntRect(1, 31, 195, 28);
 
 
 		return data;

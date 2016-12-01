@@ -23,6 +23,7 @@ Additions and modifications are my sole work for prog 1266
 #include <algorithm>
 #include <array>
 #include "Plane.h"
+#include "Vehicle.h"
 #include "SoundPlayer.h"
 namespace GEX {
 
@@ -73,7 +74,9 @@ namespace GEX {
 
 		};
 		void addEnemy(SpawnPoint point);
-		
+		void createCars();
+		void createLogs();
+		void resetNPC();
 
 	private:
 		sf::RenderWindow&					_window;
@@ -89,8 +92,21 @@ namespace GEX {
 		std::vector<SpawnPoint>				_enemySpawnPoints;
 		std::vector<Plane*>					_activeEnemies;
 
+		std::vector<Vehicle*>				_vehicles;
 		int									_lives;
 		bool								_validLives;
 
+		sf::Vector2f 						_lane1;
+		sf::Vector2f 						_lane2;
+		sf::Vector2f 						_lane3;
+		sf::Vector2f 						_lane4;
+		sf::Vector2f 						_lane5;
+
+		sf::Vector2f						_river1;
+		sf::Vector2f						_river2;
+		sf::Vector2f						_river3;
+		sf::Vector2f						_river4;
+		sf::Vector2f						_river5;
+							
 	};
 }

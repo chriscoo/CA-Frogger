@@ -23,6 +23,7 @@ Additions and modifications are my sole work for prog 1266
 #include "SpriteNode.h"
 #include "SoundPlayer.h"
 #include "SoundNode.h"
+#include "Log.h"
 #include "Vehicle.h"
 namespace GEX {
 
@@ -32,14 +33,25 @@ namespace GEX {
 		_worldView(window.getDefaultView()),
 		_sceneGraph(),
 		_sceneLayers(),
-		_worldBounds(0.f, 0.f, _worldView.getSize().x+60, _worldView.getSize().y),
+		_worldBounds(-250.f, 0.f, _worldView.getSize().x+500, _worldView.getSize().y),
 		_spawnPosition(_worldView.getSize().x / 2.f, _worldBounds.height-20),
 		_scrollSpeed(0),
 		_queue(),
 		_soundPlayer(soundPlayer),
 		_playerAircraft(nullptr),
 		_lives(3),
-		_validLives(false)
+		_validLives(false),
+		_vehicles(),
+		_lane1(_worldView.getSize().x+60, _worldBounds.height - 60),
+		_lane2(_worldBounds.left, _worldBounds.height - 100),
+		_lane3(_worldView.getSize().x+60, _worldBounds.height - 140),
+		_lane4(_worldBounds.left, _worldBounds.height - 180),
+		_lane5(_worldView.getSize().x+60, _worldBounds.height - 220),
+		_river1(_worldBounds.width, _worldBounds.height - 300),
+		_river2(_worldBounds.left, _worldBounds.height - 340),
+		_river3(_worldBounds.left, _worldBounds.height - 380),
+		_river4(_worldBounds.width, _worldBounds.height - 420),
+		_river5(_worldBounds.left, _worldBounds.height - 460)
 	{
 
 		buildScene();
@@ -63,10 +75,10 @@ namespace GEX {
 		}
 
 		//handleCollisions();
-		
+		resetNPC();
 		
 		_sceneGraph.update(deltaTime, getCommandQueue());
-	//	adaptPlayerPosition();
+		adaptPlayerPosition();
 
 	}
 	void World::draw() //creates the view 
@@ -100,7 +112,7 @@ namespace GEX {
 		//texture.setRepeated(true);
 		//add background to sceneGraph
 		std::unique_ptr<SpriteNode> background(new SpriteNode(texture, textureRect));
-		background->setPosition(_worldBounds.left, _worldBounds.top);
+		background->setPosition(_worldView.getViewport().left, _worldView.getViewport().top);
 		_sceneLayers[Background]->attatchChild(std::move(background));
 
 
@@ -113,33 +125,13 @@ namespace GEX {
 		std::unique_ptr<Frog> frog(new Frog());
 		frog->setPosition(_spawnPosition);
 
-		std::unique_ptr<Vehicle> carr(new Vehicle(Vehicle::Type::CarR));
-		carr->setPosition(_worldBounds.width, _worldBounds.height - 60);
-		_sceneLayers[Air]->attatchChild(std::move(carr));
 
-
-		std::unique_ptr<Vehicle> carl(new Vehicle(Vehicle::Type::CarL));
-		carl->setPosition(_worldBounds.left, _worldBounds.height - 100);
-		_sceneLayers[Air]->attatchChild(std::move(carl));
+		createCars();
+		createLogs();
 
 		
 
-		std::unique_ptr<Vehicle> rc(new Vehicle(Vehicle::Type::RaceCar));
-		rc->setPosition(_worldBounds.width, _worldBounds.height - 140);
-		_sceneLayers[Air]->attatchChild(std::move(rc));
-
-		std::unique_ptr<Vehicle> trac(new Vehicle(Vehicle::Type::Tractor));
-		trac->setPosition(_worldBounds.left, _worldBounds.height - 180);
-		_sceneLayers[Air]->attatchChild(std::move(trac));
-
-
-		std::unique_ptr<Vehicle> truck(new Vehicle(Vehicle::Type::Truck));
-		truck->setPosition(_worldBounds.width, _worldBounds.height - 220);
-		_sceneLayers[Air]->attatchChild(std::move(truck));
-
-		
-
-		//_playerAircraft = plane.get();
+		_playerAircraft = frog.get();
 		_sceneLayers[Air]->attatchChild(std::move(frog));
 		//
 		//
@@ -158,14 +150,12 @@ namespace GEX {
 	}
 	sf::FloatRect World::getViewBounds() const //gets the windows size
 	{
-		return sf::FloatRect(_worldView.getCenter() - _worldView.getSize() / 2.f, _worldView.getSize());
+		sf::Vector2f rect(0, 0);
+		return sf::FloatRect(rect, _worldView.getSize());
 	}
 	sf::FloatRect World::getBattleFieldBounds() const //gets the windows size plus some extra so we can spawn objects offscreen
 	{
-		sf::FloatRect bounds = getViewBounds();
-		bounds.height += 100;
-		bounds.top -= 100;
-		return bounds;
+		return _worldBounds;
 	}
 	void World::updateSounds()
 	{
@@ -311,7 +301,7 @@ namespace GEX {
 	{
 		// Keep player's position inside the screen bounds, at least borderDistance units from the border
 		sf::FloatRect viewBounds = getViewBounds();
-		const float borderDistance = 40.f;
+		const float borderDistance = 20.f;
 
 		sf::Vector2f position = _playerAircraft->getPosition();
 		position.x = std::max(position.x, viewBounds.left + borderDistance);
@@ -327,8 +317,8 @@ namespace GEX {
 		{
 			sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Atlas);
 			sf::IntRect textureRect(395, 100, 39, 40);
-			sf::Vector2f pos(_worldBounds.width, _worldBounds.top);
-			for (int i = 1; i < _lives; i++)
+			sf::Vector2f pos(_worldView.getCenter().x*2, 0);
+			for (int i = 0; i < _lives; i++)
 			{
 				std::unique_ptr<SpriteNode> frogLives(new SpriteNode(texture, textureRect));
 				frogLives->setPosition(pos.x - 50, pos.y);
@@ -342,13 +332,96 @@ namespace GEX {
 			_validLives = true;
 		}
 	}
-void World::addEnemy(SpawnPoint point) //puts the planes onto the vetor
+	void World::addEnemy(SpawnPoint point) //puts the planes onto the vetor
 {
 	point.x = _spawnPosition.x + point.x;
 	point.y = _spawnPosition.y - point.y;
 	_enemySpawnPoints.push_back(point);
 }
-bool matchesCategories(SceneNode::pair& colliders, Category::type type1, Category::type type2)
+	void World::createCars()
+{
+	std::unique_ptr<Vehicle> carr(new Vehicle(Vehicle::Type::CarR));
+	carr->setPosition(_lane1);
+	carr->setSpawn(_lane1);
+	_sceneLayers[Air]->attatchChild(std::move(carr));
+
+	std::unique_ptr<Vehicle> carr2(new Vehicle(Vehicle::Type::CarR));
+	carr2->setPosition(_lane1.x+75, _lane1.y);
+	carr2->setSpawn(carr2->getPosition());
+	_sceneLayers[Air]->attatchChild(std::move(carr2));
+
+	std::unique_ptr<Vehicle> carl(new Vehicle(Vehicle::Type::CarL));
+	carl->setPosition(_lane2);
+	carl->setSpawn(_lane2);
+	_sceneLayers[Air]->attatchChild(std::move(carl));
+
+	std::unique_ptr<Vehicle> carl2(new Vehicle(Vehicle::Type::CarL));
+	carl2->setPosition(_lane2.x + 100, _lane2.y);
+	carl2->setSpawn(carl2->getPosition());
+	_sceneLayers[Air]->attatchChild(std::move(carl2));
+
+	std::unique_ptr<Vehicle> rc(new Vehicle(Vehicle::Type::RaceCar));
+	rc->setPosition(_lane3);
+	rc->setSpawn(_lane3);
+	_sceneLayers[Air]->attatchChild(std::move(rc));
+
+	std::unique_ptr<Vehicle> rc2(new Vehicle(Vehicle::Type::RaceCar));
+	rc2->setPosition(_lane3.x + 80, _lane3.y);
+	rc2->setSpawn(rc2->getPosition());
+	_sceneLayers[Air]->attatchChild(std::move(rc2));
+
+	std::unique_ptr<Vehicle> trac(new Vehicle(Vehicle::Type::Tractor));
+	trac->setPosition(_lane4);
+	trac->setSpawn(_lane4);
+	_sceneLayers[Air]->attatchChild(std::move(trac));
+
+	std::unique_ptr<Vehicle> trac2(new Vehicle(Vehicle::Type::Tractor));
+	trac2->setPosition(_lane4.x + 130, _lane4.y);
+	trac2->setSpawn(trac2->getPosition());
+	_sceneLayers[Air]->attatchChild(std::move(trac2));
+
+	std::unique_ptr<Vehicle> truck(new Vehicle(Vehicle::Type::Truck));
+	truck->setPosition(_lane5);
+	truck->setSpawn(_lane5);
+	_sceneLayers[Air]->attatchChild(std::move(truck));
+
+	std::unique_ptr<Vehicle> truck2(new Vehicle(Vehicle::Type::Truck));
+	truck2->setPosition(_lane5.x + 130, _lane5.y);
+	truck2->setSpawn(truck2->getPosition());
+	_sceneLayers[Air]->attatchChild(std::move(truck2));
+}
+	void World::createLogs()
+	{
+
+		std::unique_ptr<Log> logS(new Log(Log::Type::Short));
+		logS->setPosition(_river2);
+		logS->setSpawn(_river2);
+		_sceneLayers[Air]->attatchChild(std::move(logS));
+		
+		std::unique_ptr<Log> logL(new Log(Log::Type::Long));
+		logL->setPosition(_river3);
+		logL->setSpawn(_river3);
+		_sceneLayers[Air]->attatchChild(std::move(logL));
+		
+		std::unique_ptr<Log> logS2(new Log(Log::Type::Short));
+		logS2->setPosition(_river5);
+		logS2->setSpawn(_river5);
+		_sceneLayers[Air]->attatchChild(std::move(logS2));
+	}
+	void World::resetNPC()
+	{
+		Command command;
+		command.category = Category::Car | Category::Log | Category::Turtle;
+		command.action = derivedAction<Entity>([this](Entity& e, sf::Time)
+		{
+			if (!getBattleFieldBounds().intersects(e.getBoundingRect()))
+				e.setPosition(e.getSpawn());
+			
+		});
+
+		_queue.push(command);
+	}
+	bool matchesCategories(SceneNode::pair& colliders, Category::type type1, Category::type type2)
 {
 	unsigned int category1 = colliders.first->getCategory();
 	unsigned int category2 = colliders.second->getCategory();

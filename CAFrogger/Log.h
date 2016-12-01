@@ -4,7 +4,7 @@ namespace GEX {
 	class Log : public Entity
 	{
 	public:
-		enum class  Type { ShortR,ShortL, LongL, LongR };
+		enum class  Type { Short, Long };
 	public:
 		Log(Type type);
 		virtual ~Log() {};
