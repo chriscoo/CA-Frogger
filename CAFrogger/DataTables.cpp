@@ -29,13 +29,13 @@ namespace GEX {
 		data[Vehicle::Type::CarR].speed = -40.f;
 		data[Vehicle::Type::CarR].textureRect = sf::IntRect(139, 100, 38, 39);
 
-		data[Vehicle::Type::RaceCar].speed = -40.f;
+		data[Vehicle::Type::RaceCar].speed = -60.f;
 		data[Vehicle::Type::RaceCar].textureRect = sf::IntRect(1, 62, 35, 29);
 
-		data[Vehicle::Type::Tractor].speed = 40.f;
+		data[Vehicle::Type::Tractor].speed = 25.f;
 		data[Vehicle::Type::Tractor].textureRect = sf::IntRect(214, 62, 33, 33);
 
-		data[Vehicle::Type::Truck].speed = -40.f;
+		data[Vehicle::Type::Truck].speed = -25.f;
 		data[Vehicle::Type::Truck].textureRect = sf::IntRect(293, 1, 61, 28);
 
 

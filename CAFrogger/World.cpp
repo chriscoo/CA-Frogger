@@ -32,7 +32,7 @@ namespace GEX {
 		_worldView(window.getDefaultView()),
 		_sceneGraph(),
 		_sceneLayers(),
-		_worldBounds(0.f, 0.f, _worldView.getSize().x, _worldView.getSize().y),
+		_worldBounds(0.f, 0.f, _worldView.getSize().x+60, _worldView.getSize().y),
 		_spawnPosition(_worldView.getSize().x / 2.f, _worldBounds.height-20),
 		_scrollSpeed(0),
 		_queue(),
