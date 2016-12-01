@@ -23,6 +23,7 @@ Additions and modifications are my sole work for prog 1266
 #include "SpriteNode.h"
 #include "SoundPlayer.h"
 #include "SoundNode.h"
+#include "Vehicle.h"
 namespace GEX {
 
 	bool matchesCategories(SceneNode::pair& colliders, Category::type type1, Category::type type2);
@@ -37,7 +38,8 @@ namespace GEX {
 		_queue(),
 		_soundPlayer(soundPlayer),
 		_playerAircraft(nullptr),
-		_lives(3)
+		_lives(3),
+		_validLives(false)
 	{
 
 		buildScene();
@@ -61,7 +63,7 @@ namespace GEX {
 		}
 
 		//handleCollisions();
-
+		
 		
 		_sceneGraph.update(deltaTime, getCommandQueue());
 	//	adaptPlayerPosition();
@@ -90,16 +92,7 @@ namespace GEX {
 			_sceneGraph.attatchChild(std::move(layer));
 		}
 
-		//background
-
-		//
-		//sf::Texture& texture = TextureHolder::getInstance().get(TextureID::DESERT);
-		//sf::IntRect textureRect(_worldBounds);
-		//texture.setRepeated(true);
-		////background sprite
-		//std::unique_ptr<SpriteNode> _background(new SpriteNode(texture, textureRect));
-		//_background->setPosition(_worldBounds.left, _worldBounds.top);
-		//_sceneLayers[Background]->attatchChild(std::move(_background));
+		
 
 		//background
 		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Background);
@@ -111,27 +104,43 @@ namespace GEX {
 		_sceneLayers[Background]->attatchChild(std::move(background));
 
 
-		//finish line
-		//sf::Texture& finish = TextureHolder::getInstance().get(TextureID::FinishLine);
-		//sf::IntRect FinishRect(0, 0, 1024, 76);
-		//std::unique_ptr<SpriteNode> finishLine(new SpriteNode(finish, FinishRect));
-		//_sceneLayers[Background]->attatchChild(std::move(finishLine));
-		////smoke behind missiles
-		//std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Type::Smoke));
-		//_sceneLayers[Air]->attatchChild(std::move(smokeNode));
-		////fire behind missiles
-		//std::unique_ptr<ParticleNode> fireNode(new ParticleNode(Particle::Type::Propellant));
-		//_sceneLayers[Air]->attatchChild(std::move(fireNode));
-
+		
 
 		std::unique_ptr<SoundNode> soundeffectNode(new SoundNode(_soundPlayer));
 		_sceneLayers[Air]->attatchChild(std::move(soundeffectNode));
-		//player plane
-		std::unique_ptr<Frog> plane(new Frog());
-		plane->setPosition(_spawnPosition);
-		//plane->setVelocity(40.f, _scrollSpeed);
-		_playerAircraft = plane.get();
-		_sceneLayers[Air]->attatchChild(std::move(plane));
+
+		//frog
+		std::unique_ptr<Frog> frog(new Frog());
+		frog->setPosition(_spawnPosition);
+
+		std::unique_ptr<Vehicle> carr(new Vehicle(Vehicle::Type::CarR));
+		carr->setPosition(_worldBounds.width, _worldBounds.height - 60);
+		_sceneLayers[Air]->attatchChild(std::move(carr));
+
+
+		std::unique_ptr<Vehicle> carl(new Vehicle(Vehicle::Type::CarL));
+		carl->setPosition(_worldBounds.left, _worldBounds.height - 100);
+		_sceneLayers[Air]->attatchChild(std::move(carl));
+
+		
+
+		std::unique_ptr<Vehicle> rc(new Vehicle(Vehicle::Type::RaceCar));
+		rc->setPosition(_worldBounds.width, _worldBounds.height - 140);
+		_sceneLayers[Air]->attatchChild(std::move(rc));
+
+		std::unique_ptr<Vehicle> trac(new Vehicle(Vehicle::Type::Tractor));
+		trac->setPosition(_worldBounds.left, _worldBounds.height - 180);
+		_sceneLayers[Air]->attatchChild(std::move(trac));
+
+
+		std::unique_ptr<Vehicle> truck(new Vehicle(Vehicle::Type::Truck));
+		truck->setPosition(_worldBounds.width, _worldBounds.height - 220);
+		_sceneLayers[Air]->attatchChild(std::move(truck));
+
+		
+
+		//_playerAircraft = plane.get();
+		_sceneLayers[Air]->attatchChild(std::move(frog));
 		//
 		//
 		//
@@ -313,22 +322,25 @@ namespace GEX {
 	}
 	void World::drawLives()
 	{
-
-
-		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Atlas);
-		sf::IntRect textureRect(395,100, 39, 40);
-		sf::Vector2f pos(_worldBounds.width, _worldBounds.top);
-		for (int i = 1; i < _lives; i++)
+		//if statement to stop it from building them constantly will fix this up once i put in collision/frog death
+		if (_validLives == false)
 		{
-			std::unique_ptr<SpriteNode> frogLives(new SpriteNode(texture, textureRect));
-			frogLives->setPosition(pos.x - 50, pos.y);
-			_sceneLayers[Background]->attatchChild(std::move(frogLives));
-			pos.x = pos.x - 50;
-		}
+			sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Atlas);
+			sf::IntRect textureRect(395, 100, 39, 40);
+			sf::Vector2f pos(_worldBounds.width, _worldBounds.top);
+			for (int i = 1; i < _lives; i++)
+			{
+				std::unique_ptr<SpriteNode> frogLives(new SpriteNode(texture, textureRect));
+				frogLives->setPosition(pos.x - 50, pos.y);
+				_sceneLayers[Background]->attatchChild(std::move(frogLives));
+				pos.x = pos.x - 50;
+			}
 
-		std::unique_ptr<TextNode> HealthDisplay(new TextNode("Lives :"));
-		HealthDisplay->setPosition(pos.x-40, pos.y+20);
-		_sceneLayers[Background]->attatchChild(std::move(HealthDisplay));
+			std::unique_ptr<TextNode> HealthDisplay(new TextNode("Lives :"));
+			HealthDisplay->setPosition(pos.x - 40, pos.y + 20);
+			_sceneLayers[Background]->attatchChild(std::move(HealthDisplay));
+			_validLives = true;
+		}
 	}
 void World::addEnemy(SpawnPoint point) //puts the planes onto the vetor
 {

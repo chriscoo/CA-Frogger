@@ -22,12 +22,14 @@ Additions and modifications are my sole work for prog 1266
 namespace GEX {
 	struct FrogMover{ //to move the aircraftk
 	
-		FrogMover(float vx, float vy) : velocity(vx, vy){}
+		FrogMover(float vx, float vy, float rotation) : velocity(vx, vy), rotation(rotation){}
 		void operator() (Frog& frog, sf::Time) const {
 			frog.setPosition(frog.getPosition().x + velocity.x, frog.getPosition().y + velocity.y);
+			frog.setRotation(rotation);
 		}
 
 		sf::Vector2f velocity;
+		float rotation;
 	
 	};
 
@@ -90,10 +92,10 @@ namespace GEX {
 		const float playerSpeed = 200.f;
 		const float spinSpeed = 10.f;
 
-		_actionBindings[Action::moveLeft].action = derivedAction<Frog>(FrogMover(-40, 0));
-		_actionBindings[Action::moveRight].action = derivedAction<Frog>(FrogMover(40, 0));
-		_actionBindings[Action::moveUp].action = derivedAction<Frog>(FrogMover(0, -40));
-		_actionBindings[Action::moveDown].action = derivedAction<Frog>(FrogMover(0, 40));
+		_actionBindings[Action::moveLeft].action = derivedAction<Frog>(FrogMover(-40, 0, 270));
+		_actionBindings[Action::moveRight].action = derivedAction<Frog>(FrogMover(40, 0, 90));
+		_actionBindings[Action::moveUp].action = derivedAction<Frog>(FrogMover(0, -40, 0));
+		_actionBindings[Action::moveDown].action = derivedAction<Frog>(FrogMover(0, 40, 180));
 		//_actionBindings[Action::fireBullet].action = derivedAction<Plane>([](Plane& a, sf::Time& dt) {return a.fireBullet(); });
 		//_actionBindings[Action::fireMissle].action = derivedAction<Plane>([](Plane& a, sf::Time& dt) {return a.fireMissle(); });
 

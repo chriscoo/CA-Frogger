@@ -19,7 +19,28 @@ Additions and modifications are my sole work for prog 1266
 
 
 namespace GEX {
+	std::map<Vehicle::Type, VehicleData> InitializeVehicleData()
+	{
+		std::map<Vehicle::Type, VehicleData> data;
 
+		data[Vehicle::Type::CarL].speed = 40.f;
+		data[Vehicle::Type::CarL].textureRect = sf::IntRect(69, 100, 37, 37);
+
+		data[Vehicle::Type::CarR].speed = -40.f;
+		data[Vehicle::Type::CarR].textureRect = sf::IntRect(139, 100, 38, 39);
+
+		data[Vehicle::Type::RaceCar].speed = -40.f;
+		data[Vehicle::Type::RaceCar].textureRect = sf::IntRect(1, 62, 35, 29);
+
+		data[Vehicle::Type::Tractor].speed = 40.f;
+		data[Vehicle::Type::Tractor].textureRect = sf::IntRect(214, 62, 33, 33);
+
+		data[Vehicle::Type::Truck].speed = -40.f;
+		data[Vehicle::Type::Truck].textureRect = sf::IntRect(293, 1, 61, 28);
+
+
+		return data;
+	}
 	//planes
 	std::map<Plane::Type, AircraftData> GEX::InitializeAircraftData()
 	{
