@@ -22,6 +22,7 @@ Additions and modifications are my sole work for prog 1266
 #include "Particle.h"
 #include "Pickup.h"
 #include "Utility.h"
+#include "Vehicle.h"
 #include <map>
 #include <vector>
 namespace GEX {
@@ -64,8 +65,15 @@ namespace GEX {
 		sf::Color					color;
 
 	};
+	struct VehicleData {
+		//TextureID					texture;
+		//sf::IntRect					textureRect;
+		sf::IntRect					textureRect;
+		float						speed;
 
+	};
 
+	std::map<Vehicle::Type, VehicleData> InitializeVehicleData();
 	std::map<Plane::Type, AircraftData> InitializeAircraftData();
 	std::map<Projectile::Type, ProjectileData> InitializeProjectileData();
 	std::map<Pickup::Type, PickupData> InitializePickupData();

@@ -44,6 +44,7 @@ namespace GEX {
 
 		bool			hasAlivePlayer() const;
 		bool			hasReachedFinish() const;
+
 	private:
 
 		sf::FloatRect getViewBounds() const;
@@ -58,7 +59,6 @@ namespace GEX {
 		void destroyEntitiesOutsideWorldView();
 		void adaptPlayerPosition();
 		void drawLives();
-		
 		enum _Layers
 		{
 			Background,
@@ -74,6 +74,8 @@ namespace GEX {
 		};
 		void addEnemy(SpawnPoint point);
 		
+
+	private:
 		sf::RenderWindow&					_window;
 		sf::View							_worldView;
 		SceneNode							_sceneGraph;
@@ -88,6 +90,7 @@ namespace GEX {
 		std::vector<Plane*>					_activeEnemies;
 
 		int									_lives;
+		bool								_validLives;
 
 	};
 }

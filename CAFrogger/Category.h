@@ -24,12 +24,13 @@ namespace GEX {
 			Frog = 1 << 1,
 			Log = 1 << 2,
 			Turtle = 1 << 3,
-			LandingZone = 1 << 4,
-			ParticleSystem = 1 << 5,
-			SoundEffect = 1 << 6,
+			Car = 1 << 4,
+			LandingZone = 1 << 5,
+			ParticleSystem = 1 << 6,
+			SoundEffect = 1 << 7,
 			
 
-			ThingsPlayerCollidesWith = Log | Turtle | LandingZone,
+			ThingsPlayerCollidesWith = Log | Turtle | LandingZone | Car,
 			ThingsEnemyCollidesWith = Frog
 		};
 
