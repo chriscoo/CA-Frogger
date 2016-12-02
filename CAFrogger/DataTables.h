@@ -23,6 +23,7 @@ Additions and modifications are my sole work for prog 1266
 #include "Pickup.h"
 #include "Utility.h"
 #include "Vehicle.h"
+#include "Turtle.h"
 #include "Log.h"
 #include <map>
 #include <vector>
@@ -79,8 +80,15 @@ namespace GEX {
 
 	};
 
+
+	struct TurtleData {
+		sf::IntRect					textureRect;
+		float						speed;
+
+	};
 	std::map<Log::Type, LogData> InitializeLogData();
 	std::map<Vehicle::Type, VehicleData> InitializeVehicleData();
+	std::map<Turtle::Type, TurtleData> InitializeTurtleData();
 	std::map<Plane::Type, AircraftData> InitializeAircraftData();
 	std::map<Projectile::Type, ProjectileData> InitializeProjectileData();
 	std::map<Pickup::Type, PickupData> InitializePickupData();

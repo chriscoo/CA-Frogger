@@ -19,6 +19,7 @@ Additions and modifications are my sole work for prog 1266
 #include "Pickup.h"
 #include "TextureHolder.h"
 #include "Frog.h"
+#include "Turtle.h"
 #include "ParticleNode.h"
 #include "SpriteNode.h"
 #include "SoundPlayer.h"
@@ -47,10 +48,10 @@ namespace GEX {
 		_lane3(_worldView.getSize().x+60, _worldBounds.height - 140),
 		_lane4(_worldBounds.left, _worldBounds.height - 180),
 		_lane5(_worldView.getSize().x+60, _worldBounds.height - 220),
-		_river1(_worldBounds.width, _worldBounds.height - 300),
+		_river1(_worldView.getSize().x + 60, _worldBounds.height - 300),
 		_river2(_worldBounds.left, _worldBounds.height - 340),
 		_river3(_worldBounds.left, _worldBounds.height - 380),
-		_river4(_worldBounds.width, _worldBounds.height - 420),
+		_river4(_worldView.getSize().x + 60, _worldBounds.height - 420),
 		_river5(_worldBounds.left, _worldBounds.height - 460)
 	{
 
@@ -128,7 +129,7 @@ namespace GEX {
 
 		createCars();
 		createLogs();
-
+		createTurtles();
 		
 
 		_playerAircraft = frog.get();
@@ -407,6 +408,19 @@ namespace GEX {
 		logS2->setPosition(_river5);
 		logS2->setSpawn(_river5);
 		_sceneLayers[Air]->attatchChild(std::move(logS2));
+	}
+	void World::createTurtles()
+	{
+		std::unique_ptr<Turtle> turtleS(new Turtle(Turtle::Type::Turtle2));
+		turtleS->setPosition(_river1);
+		turtleS->setSpawn(_river1);
+		_sceneLayers[Air]->attatchChild(std::move(turtleS));
+
+		std::unique_ptr<Turtle> turtleL(new Turtle(Turtle::Type::Turtle3));
+		turtleL->setPosition(_river4);
+		turtleL->setSpawn(_river4);
+		_sceneLayers[Air]->attatchChild(std::move(turtleL));
+
 	}
 	void World::resetNPC()
 	{

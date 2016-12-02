@@ -76,6 +76,7 @@ namespace GEX {
 		void addEnemy(SpawnPoint point);
 		void createCars();
 		void createLogs();
+		void createTurtles();
 		void resetNPC();
 
 	private:
