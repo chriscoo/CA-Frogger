@@ -50,7 +50,7 @@ namespace GEX {
 
 	bool Frog::isMarkedForRemoval() const
 	{
-		return false;
+		return isDestroyed();
 	}
 
 	float Frog::getMaxSpeed() const
@@ -60,7 +60,7 @@ namespace GEX {
 
 	sf::FloatRect Frog::getBoundingRect() const
 	{
-		return sf::FloatRect();
+			return getWorldTrandform().transformRect(_player.getGlobalBounds());		
 	}
 
 }

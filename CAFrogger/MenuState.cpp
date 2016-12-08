@@ -21,8 +21,8 @@ Additions and modifications are my sole work for prog 1266
 #include "FontHolder.h"
 #include "MusicPlayer.h"
 
-#include "SFML\Graphics\RenderWindow.hpp"
-#include "SFML\Graphics\View.hpp"
+#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Graphics/View.hpp"
 
 namespace GEX {
 
@@ -100,6 +100,7 @@ namespace GEX {
 				_optionsIndex--;
 			else
 				_optionsIndex = 0;
+				//_optionsIndex = _options.size()-1;
 
 			updateOptionText();
 		}

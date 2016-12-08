@@ -34,8 +34,8 @@ namespace GEX {
 		_worldView(window.getDefaultView()),
 		_sceneGraph(),
 		_sceneLayers(),
-		_worldBounds(-250.f, 0.f, _worldView.getSize().x+500, _worldView.getSize().y),
-		_spawnPosition(_worldView.getSize().x / 2.f, _worldBounds.height-20),
+		_worldBounds(-250.f, 0.f, _worldView.getSize().x + 500, _worldView.getSize().y),
+		_spawnPosition(_worldView.getSize().x / 2.f, _worldBounds.height - 20),
 		_scrollSpeed(0),
 		_queue(),
 		_soundPlayer(soundPlayer),
@@ -75,16 +75,18 @@ namespace GEX {
 			_sceneGraph.onCommand(_queue.pop(), sf::Time::Zero);
 		}
 
-		//handleCollisions();
+		handleCollisions();
 		resetNPC();
-		
+
+		_sceneGraph.removeWrecks();
+		createFrog();
 		_sceneGraph.update(deltaTime, getCommandQueue());
 		adaptPlayerPosition();
-
+		drawLives();
 	}
 	void World::draw() //creates the view 
 	{
-		drawLives();
+		
 		_window.setView(_worldView);
 		_window.draw(_sceneGraph);
 	}
@@ -247,44 +249,83 @@ namespace GEX {
 }
 	void World::handleCollisions()
 	{
-	//	std::set<SceneNode::pair> collisionPairs;
-	//	_sceneGraph.checkSceneCollision(_sceneGraph, collisionPairs);
-	//
-	//	for (SceneNode::pair pair : collisionPairs)
-	//	{
-	//
-	//		//if you and a plane collides
-	//		if (matchesCategories(pair, Category::playerAircraft, Category::EnemyAircraft))
-	//		{
-	//			auto& player = static_cast<Plane&>(*pair.first);
-	//			auto& enemy = static_cast<Plane&>(*pair.second);
-	//
-	//			player.damage(enemy.GetHitPoints());
-	//			enemy.distroy();
-	//		}
-	//		//if you hit an enemy with a bullet/missile
-	//		if (matchesCategories(pair, Category::EnemyAircraft, Category::AlliedProjectile) || (matchesCategories(pair, Category::playerAircraft, Category::EnemyProjectile)))
-	//		{
-	//			auto& aircraft = static_cast<Plane&>(*pair.first);
-	//			auto& projectile = static_cast<Projectile&>(*pair.second);
-	//
-	//			aircraft.damage(projectile.GetHitPoints());
-	//			projectile.distroy();
-	//		}
-	//		
-	//		//if you hit a pick up
-	//		if (matchesCategories(pair, Category::playerAircraft, Category::PickUp))
-	//		{
-	//			auto& player = static_cast<Plane&>(*pair.first);
-	//			auto& pickup = static_cast<Pickup&>(*pair.second);
-	//
-	//			pickup.apply(player);
-	//			pickup.distroy();
-	//			player.playLocalSound(_queue, SoundEffectID::CollectPickup);
-	//			
-	//		}
-	//
-	//	}
+		std::set<SceneNode::pair> collisionPairs;
+		_sceneGraph.checkSceneCollision(_sceneGraph, collisionPairs);
+		bool collision = false;
+		for (SceneNode::pair pair : collisionPairs)
+		{
+	
+			//if you and a plane collides
+			if (_playerAircraft->getPosition().y <= 260)
+			{
+				if (matchesCategories(pair, Category::Frog, Category::Car))
+				{
+					auto& player = static_cast<Frog&>(*pair.first);
+					auto& enemy = static_cast<Vehicle&>(*pair.second);
+
+					_validLives = false;
+					_lives--;
+
+					player.distroy();
+					std::unique_ptr<Frog> frog(new Frog());
+					frog->setPosition(_spawnPosition);
+
+					_playerAircraft = frog.get();
+					_sceneLayers[Air]->attatchChild(std::move(frog));
+					
+				}
+			}
+			//else
+			//{
+			//	if (matchesCategories(pair, Category::Frog, Category::Log))
+			//		{
+			//			auto& player = static_cast<Plane&>(*pair.first);
+			//			auto& log = static_cast<Log&>(*pair.second);
+			//		
+			//			player.setVelocity(log.getVelocity());
+			//		}
+			//	else if (matchesCategories(pair, Category::Frog, Category::Turtle))
+			//	{
+			//		auto& player = static_cast<Plane&>(*pair.first);
+			//		auto& turtle = static_cast<Turtle&>(*pair.second);
+			//
+			//		player.setVelocity(turtle.getVelocity());
+			//	}
+			//	collision = true;
+			//}
+			//if you hit an enemy with a bullet/missile
+			//if (matchesCategories(pair, Category::EnemyAircraft, Category::AlliedProjectile) || (matchesCategories(pair, Category::playerAircraft, Category::EnemyProjectile)))
+			//{
+			//	auto& aircraft = static_cast<Plane&>(*pair.first);
+			//	auto& projectile = static_cast<Projectile&>(*pair.second);
+			//
+			//	aircraft.damage(projectile.GetHitPoints());
+			//	projectile.distroy();
+			//}
+			//
+			////if you hit a pick up
+			//if (matchesCategories(pair, Category::playerAircraft, Category::PickUp))
+			//{
+			//	auto& player = static_cast<Plane&>(*pair.first);
+			//	auto& pickup = static_cast<Pickup&>(*pair.second);
+			//
+			//	pickup.apply(player);
+			//	pickup.distroy();
+			//	player.playLocalSound(_queue, SoundEffectID::CollectPickup);
+			//	
+			//}
+	
+		}
+		//if (_playerAircraft->getPosition().y < 240 && collision == false)
+		//{
+		//	_playerAircraft->distroy();
+		//	std::unique_ptr<Frog> frog(new Frog());
+		//	frog->setPosition(_spawnPosition);
+		//
+		//	_playerAircraft = frog.get();
+		//	_playerAircraft->setVelocity(0, 0);
+		//	_sceneLayers[Air]->attatchChild(std::move(frog));
+		//}
 	}
 	void World::destroyEntitiesOutsideWorldView()
 	{
@@ -319,12 +360,16 @@ namespace GEX {
 			sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Atlas);
 			sf::IntRect textureRect(395, 100, 39, 40);
 			sf::Vector2f pos(_worldView.getCenter().x*2, 0);
+			
 			for (int i = 0; i < _lives; i++)
 			{
 				std::unique_ptr<SpriteNode> frogLives(new SpriteNode(texture, textureRect));
 				frogLives->setPosition(pos.x - 50, pos.y);
+
 				_sceneLayers[Background]->attatchChild(std::move(frogLives));
+				
 				pos.x = pos.x - 50;
+				
 			}
 
 			std::unique_ptr<TextNode> HealthDisplay(new TextNode("Lives :"));
@@ -339,6 +384,9 @@ namespace GEX {
 	point.y = _spawnPosition.y - point.y;
 	_enemySpawnPoints.push_back(point);
 }
+	void World::createFrog()
+	{
+	}
 	void World::createCars()
 {
 	std::unique_ptr<Vehicle> carr(new Vehicle(Vehicle::Type::CarR));
@@ -420,6 +468,7 @@ namespace GEX {
 		turtleL->setPosition(_river4);
 		turtleL->setSpawn(_river4);
 		_sceneLayers[Air]->attatchChild(std::move(turtleL));
+
 
 	}
 	void World::resetNPC()

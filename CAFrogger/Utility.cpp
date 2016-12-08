@@ -16,7 +16,7 @@ Additions and modifications are my sole work for prog 1266
 */
 
 #include "Utility.h"
-#include <SFML\Graphics\Sprite.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include <random>
 #include <cmath>

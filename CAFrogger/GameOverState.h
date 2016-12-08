@@ -1,7 +1,7 @@
 #pragma once
 #include "State.h"
-#include "SFML\Graphics\Sprite.hpp"
-#include "SFML\Graphics\Text.hpp"
+#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Text.hpp"
 
 namespace GEX {
 	class GameOverState : public State

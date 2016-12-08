@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <cassert>
-#include <SFML\Audio\Music.hpp>
+#include <SFML/Audio/Music.hpp>
 namespace GEX {
 	enum class MusicID {
 		MenuTheme,

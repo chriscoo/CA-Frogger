@@ -16,7 +16,7 @@ Additions and modifications are my sole work for prog 1266
 */
 
 #pragma once
-#include "SFML\System.hpp"
+#include "SFML/System.hpp"
 #include "State.h"
 #include "StateIdentifiers.h"
 #include "TextureHolder.h"

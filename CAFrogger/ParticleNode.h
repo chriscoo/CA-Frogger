@@ -17,9 +17,9 @@ Additions and modifications are my sole work for prog 1266
 
 #include "Particle.h"
 #include "SceneNode.h"
-#include <SFML\Graphics\RectangleShape.hpp>
-#include <SFML\Graphics\RenderWindow.hpp>
-#include <SFML\Graphics\View.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 #include <deque>
 namespace GEX {
 	class ParticleNode : public SceneNode

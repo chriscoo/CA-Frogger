@@ -16,7 +16,7 @@ Additions and modifications are my sole work for prog 1266
 
 */
 #pragma once
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include "SceneNode.h"
 #include "CommandQueue.h"
 #include <vector>
@@ -25,6 +25,7 @@ Additions and modifications are my sole work for prog 1266
 #include "Plane.h"
 #include "Vehicle.h"
 #include "SoundPlayer.h"
+#include "SpriteNode.h"
 namespace GEX {
 
 	class Frog;
@@ -74,6 +75,7 @@ namespace GEX {
 
 		};
 		void addEnemy(SpawnPoint point);
+		void createFrog();
 		void createCars();
 		void createLogs();
 		void createTurtles();
@@ -94,6 +96,7 @@ namespace GEX {
 		std::vector<Plane*>					_activeEnemies;
 
 		std::vector<Vehicle*>				_vehicles;
+		
 		int									_lives;
 		bool								_validLives;
 
