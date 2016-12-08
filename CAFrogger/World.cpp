@@ -280,15 +280,15 @@ namespace GEX {
 						player.setVelocity(log.getVelocity());
 						isInRiver = false;
 					}
-	//			else if (matchesCategories(pair, Category::Frog, Category::Turtle))//if the player collides with a turtle so he travels with it
-	//			{
-	//				auto& player = static_cast<Frog&>(*pair.first);
-	//				auto& turtle = static_cast<Turtle&>(*pair.second);
-	//			
-	//				player.setVelocity(turtle.getVelocity());
-	//				isInRiver = false;
-	//			}
-	//	
+				else if (matchesCategories(pair, Category::Frog, Category::Turtle))//if the player collides with a turtle so he travels with it
+				{
+					auto& player = static_cast<Frog&>(*pair.first);
+					auto& turtle = static_cast<Turtle&>(*pair.second);
+				
+					player.setVelocity(turtle.getVelocity());
+					isInRiver = false;
+				}
+		
 	}
 	//	
 	//	
