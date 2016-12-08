@@ -43,7 +43,7 @@ namespace GEX {
 
 		void			buildScene();
 		
-
+		bool			playerHasLives();
 		bool			hasAlivePlayer() const;
 		bool			hasReachedFinish() const;
 
@@ -60,7 +60,6 @@ namespace GEX {
 		void handleCollisions();
 		void destroyEntitiesOutsideWorldView();
 		void adaptPlayerPosition();
-		void drawLives();
 		enum _Layers
 		{
 			Background,
@@ -92,20 +91,20 @@ namespace GEX {
 		sf::Vector2f						_spawnPosition;
 		float								_scrollSpeed;
 		Frog*								_playerAircraft;
+		
 		std::vector<SpawnPoint>				_enemySpawnPoints;
 		std::vector<Plane*>					_activeEnemies;
 
 		std::vector<Vehicle*>				_vehicles;
 		
-		int									_lives;
-		bool								_validLives;
+		
 
 		sf::Vector2f 						_lane1;
 		sf::Vector2f 						_lane2;
 		sf::Vector2f 						_lane3;
 		sf::Vector2f 						_lane4;
 		sf::Vector2f 						_lane5;
-
+		const int StartofRiver = 320; //where the middle section of grass ends and the river begins 
 		sf::Vector2f						_river1;
 		sf::Vector2f						_river2;
 		sf::Vector2f						_river3;

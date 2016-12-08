@@ -40,8 +40,6 @@ namespace GEX {
 		_queue(),
 		_soundPlayer(soundPlayer),
 		_playerAircraft(nullptr),
-		_lives(3),
-		_validLives(false),
 		_vehicles(),
 		_lane1(_worldView.getSize().x+60, _worldBounds.height - 60),
 		_lane2(_worldBounds.left, _worldBounds.height - 100),
@@ -79,10 +77,10 @@ namespace GEX {
 		resetNPC();
 
 		_sceneGraph.removeWrecks();
-		createFrog();
+		
 		_sceneGraph.update(deltaTime, getCommandQueue());
 		adaptPlayerPosition();
-		drawLives();
+		
 	}
 	void World::draw() //creates the view 
 	{
@@ -112,7 +110,7 @@ namespace GEX {
 		//background
 		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Background);
 		sf::IntRect textureRect(0, 0, 480, 600);
-		//texture.setRepeated(true);
+		
 		//add background to sceneGraph
 		std::unique_ptr<SpriteNode> background(new SpriteNode(texture, textureRect));
 		background->setPosition(_worldView.getViewport().left, _worldView.getViewport().top);
@@ -128,7 +126,7 @@ namespace GEX {
 		std::unique_ptr<Frog> frog(new Frog());
 		frog->setPosition(_spawnPosition);
 
-
+		
 		createCars();
 		createLogs();
 		createTurtles();
@@ -136,10 +134,13 @@ namespace GEX {
 
 		_playerAircraft = frog.get();
 		_sceneLayers[Air]->attatchChild(std::move(frog));
-		//
-		//
-		//
-		//addEnemies();
+	}
+	bool World::playerHasLives()
+	{
+		if (_playerAircraft->getLives() == 0)
+			return false;
+		else
+			return true;
 	}
 	bool World::hasAlivePlayer() const
 	{
@@ -251,81 +252,55 @@ namespace GEX {
 	{
 		std::set<SceneNode::pair> collisionPairs;
 		_sceneGraph.checkSceneCollision(_sceneGraph, collisionPairs);
-		bool collision = false;
+		bool isInRiver = true;//to tell if the player is on a log/turtle or if he is in the river
 		for (SceneNode::pair pair : collisionPairs)
 		{
-	
-			//if you and a plane collides
-			if (_playerAircraft->getPosition().y <= 260)
+
+
+
+			if (matchesCategories(pair, Category::Frog, Category::Car))//if the player collides with a car
 			{
-				if (matchesCategories(pair, Category::Frog, Category::Car))
-				{
-					auto& player = static_cast<Frog&>(*pair.first);
-					auto& enemy = static_cast<Vehicle&>(*pair.second);
+				auto& player = static_cast<Frog&>(*pair.first);
+				auto& enemy = static_cast<Vehicle&>(*pair.second);
+				//triggers the lives to redraw themselves with 1 less life
+				
+				//destrays then respawns the frog at the spawn point
+				player.die();
+				player.setPosition(_spawnPosition);
+				player.setVelocity(0, 0);//removes the travel speed he gets from the log/turtle
+				
 
-					_validLives = false;
-					_lives--;
-
-					player.distroy();
-					std::unique_ptr<Frog> frog(new Frog());
-					frog->setPosition(_spawnPosition);
-
-					_playerAircraft = frog.get();
-					_sceneLayers[Air]->attatchChild(std::move(frog));
-					
-				}
 			}
-			//else
-			//{
-			//	if (matchesCategories(pair, Category::Frog, Category::Log))
-			//		{
-			//			auto& player = static_cast<Plane&>(*pair.first);
-			//			auto& log = static_cast<Log&>(*pair.second);
-			//		
-			//			player.setVelocity(log.getVelocity());
-			//		}
-			//	else if (matchesCategories(pair, Category::Frog, Category::Turtle))
-			//	{
-			//		auto& player = static_cast<Plane&>(*pair.first);
-			//		auto& turtle = static_cast<Turtle&>(*pair.second);
-			//
-			//		player.setVelocity(turtle.getVelocity());
-			//	}
-			//	collision = true;
-			//}
-			//if you hit an enemy with a bullet/missile
-			//if (matchesCategories(pair, Category::EnemyAircraft, Category::AlliedProjectile) || (matchesCategories(pair, Category::playerAircraft, Category::EnemyProjectile)))
-			//{
-			//	auto& aircraft = static_cast<Plane&>(*pair.first);
-			//	auto& projectile = static_cast<Projectile&>(*pair.second);
-			//
-			//	aircraft.damage(projectile.GetHitPoints());
-			//	projectile.distroy();
-			//}
-			//
-			////if you hit a pick up
-			//if (matchesCategories(pair, Category::playerAircraft, Category::PickUp))
-			//{
-			//	auto& player = static_cast<Plane&>(*pair.first);
-			//	auto& pickup = static_cast<Pickup&>(*pair.second);
-			//
-			//	pickup.apply(player);
-			//	pickup.distroy();
-			//	player.playLocalSound(_queue, SoundEffectID::CollectPickup);
-			//	
-			//}
-	
-		}
-		//if (_playerAircraft->getPosition().y < 240 && collision == false)
-		//{
-		//	_playerAircraft->distroy();
-		//	std::unique_ptr<Frog> frog(new Frog());
-		//	frog->setPosition(_spawnPosition);
-		//
-		//	_playerAircraft = frog.get();
-		//	_playerAircraft->setVelocity(0, 0);
-		//	_sceneLayers[Air]->attatchChild(std::move(frog));
-		//}
+		
+	//			if (matchesCategories(pair, Category::Frog, Category::Log))//if the player collides with a log so he travels with it
+	//				{
+	//					auto& player = static_cast<Frog&>(*pair.first);
+	//					auto& log = static_cast<Log&>(*pair.second);
+	//				
+	//					player.setVelocity(log.getVelocity());
+	//					isInRiver = false;
+	//				}
+	//			else if (matchesCategories(pair, Category::Frog, Category::Turtle))//if the player collides with a turtle so he travels with it
+	//			{
+	//				auto& player = static_cast<Frog&>(*pair.first);
+	//				auto& turtle = static_cast<Turtle&>(*pair.second);
+	//			
+	//				player.setVelocity(turtle.getVelocity());
+	//				isInRiver = false;
+	//			}
+	//	
+	}
+	//	
+	//	
+	//	
+	//	if (_playerAircraft->getPosition().y < StartofRiver && isInRiver == true)//if you go into the river and are not on a log/tutle
+	//	{
+	//		//triggers the lives to redraw themselves with 1 less life
+	//		_playerAircraft->die();
+	//	}
+	//	if (_playerAircraft->getPosition().y > StartofRiver)//resets his velocity if he goes back onto land
+	//		_playerAircraft->setVelocity(0, 0);
+		
 	}
 	void World::destroyEntitiesOutsideWorldView()
 	{
@@ -352,32 +327,6 @@ namespace GEX {
 		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
 		_playerAircraft->setPosition(position);
 	}
-	void World::drawLives()
-	{
-		//if statement to stop it from building them constantly will fix this up once i put in collision/frog death
-		if (_validLives == false)
-		{
-			sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Atlas);
-			sf::IntRect textureRect(395, 100, 39, 40);
-			sf::Vector2f pos(_worldView.getCenter().x*2, 0);
-			
-			for (int i = 0; i < _lives; i++)
-			{
-				std::unique_ptr<SpriteNode> frogLives(new SpriteNode(texture, textureRect));
-				frogLives->setPosition(pos.x - 50, pos.y);
-
-				_sceneLayers[Background]->attatchChild(std::move(frogLives));
-				
-				pos.x = pos.x - 50;
-				
-			}
-
-			std::unique_ptr<TextNode> HealthDisplay(new TextNode("Lives :"));
-			HealthDisplay->setPosition(pos.x - 40, pos.y + 20);
-			_sceneLayers[Background]->attatchChild(std::move(HealthDisplay));
-			_validLives = true;
-		}
-	}
 	void World::addEnemy(SpawnPoint point) //puts the planes onto the vetor
 {
 	point.x = _spawnPosition.x + point.x;
@@ -386,6 +335,13 @@ namespace GEX {
 }
 	void World::createFrog()
 	{
+		_playerAircraft->distroy();
+		std::unique_ptr<Frog> frog(new Frog());
+		frog->setPosition(_spawnPosition);
+
+		_playerAircraft = frog.get();
+		_playerAircraft->setVelocity(0, 0); //removes the travel speed he gets from the log/turtle
+		_sceneLayers[Air]->attatchChild(std::move(frog));
 	}
 	void World::createCars()
 {

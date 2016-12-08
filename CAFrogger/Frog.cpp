@@ -26,11 +26,13 @@ Additions and modifications are my sole work for prog 1266
 //#include "JsonFrameParser.hpp"
 
 namespace GEX {
-	Frog::Frog() : Entity(1), _player(TextureHolder::getInstance().get(TextureID::Atlas)), _directionIndex(0), _travelDistance(0), _isMarkedForRemoval(false), _playedMovementSound(true), _playedDeathSound(true), _state()
+	Frog::Frog() : Entity(1), _player(TextureHolder::getInstance().get(TextureID::Atlas)), _life(TextureHolder::getInstance().get(TextureID::Atlas), sf::IntRect(395,100,39,40)), _directionIndex(0), _travelDistance(0), _isMarkedForRemoval(false), _playedMovementSound(true), _playedDeathSound(true), _state(), _lives(3)
 	{
 		sf::IntRect rect(62,0,30,22);
 		_player.setTextureRect(rect);
 		centerOrigin(_player);
+
+		
 		
 
 	}
@@ -41,6 +43,12 @@ namespace GEX {
 	void Frog::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
 	{
 		target.draw(_player, state);
+		_life.setPosition(440.f, 5.f);
+		for (int i = 0; i < _lives; ++i)
+		{
+			target.draw(_life);
+			_life.setPosition(_life.getPosition().x - 40.f, _life.getPosition().y);
+		}
 	}
 	void Frog::updateCurrent(sf::Time dt, CommandQueue & commands)
 	{
@@ -48,8 +56,14 @@ namespace GEX {
 		Entity::updateCurrent(dt, commands);
 	}
 
+	void Frog::die()
+	{
+		_lives--;
+	}
+
 	bool Frog::isMarkedForRemoval() const
 	{
+		
 		return isDestroyed();
 	}
 
@@ -61,6 +75,11 @@ namespace GEX {
 	sf::FloatRect Frog::getBoundingRect() const
 	{
 			return getWorldTrandform().transformRect(_player.getGlobalBounds());		
+	}
+
+	int Frog::getLives()
+	{
+		return _lives;
 	}
 
 }

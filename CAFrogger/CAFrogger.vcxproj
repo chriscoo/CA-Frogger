@@ -139,6 +139,7 @@
     <ClCompile Include="GameOverState.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GexState.cpp" />
+    <ClCompile Include="LifeNode.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="GameOverState.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GexState.h" />
+    <ClInclude Include="LifeNode.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="MenuState.h" />
     <ClInclude Include="MusicPlayer.h" />
