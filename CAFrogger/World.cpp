@@ -290,16 +290,16 @@ namespace GEX {
 				}
 		
 	}
-	//	
-	//	
-	//	
-	//	if (_playerAircraft->getPosition().y < StartofRiver && isInRiver == true)//if you go into the river and are not on a log/tutle
-	//	{
-	//		//triggers the lives to redraw themselves with 1 less life
-	//		_playerAircraft->die();
-	//	}
-	//	if (_playerAircraft->getPosition().y > StartofRiver)//resets his velocity if he goes back onto land
-	//		_playerAircraft->setVelocity(0, 0);
+		
+		
+		
+		if (_playerAircraft->getPosition().y < StartofRiver && isInRiver == true)//if you go into the river and are not on a log/tutle
+		{
+			//triggers the lives to redraw themselves with 1 less life
+			_playerAircraft->die();
+		}
+		if (_playerAircraft->getPosition().y > StartofRiver)//resets his velocity if he goes back onto land
+			_playerAircraft->setVelocity(0, 0);
 		
 	}
 	void World::destroyEntitiesOutsideWorldView()
