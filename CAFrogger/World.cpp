@@ -272,14 +272,14 @@ namespace GEX {
 
 			}
 		
-	//			if (matchesCategories(pair, Category::Frog, Category::Log))//if the player collides with a log so he travels with it
-	//				{
-	//					auto& player = static_cast<Frog&>(*pair.first);
-	//					auto& log = static_cast<Log&>(*pair.second);
-	//				
-	//					player.setVelocity(log.getVelocity());
-	//					isInRiver = false;
-	//				}
+				if (matchesCategories(pair, Category::Frog, Category::Log))//if the player collides with a log so he travels with it
+					{
+						auto& player = static_cast<Frog&>(*pair.first);
+						auto& log = static_cast<Log&>(*pair.second);
+					
+						player.setVelocity(log.getVelocity());
+						isInRiver = false;
+					}
 	//			else if (matchesCategories(pair, Category::Frog, Category::Turtle))//if the player collides with a turtle so he travels with it
 	//			{
 	//				auto& player = static_cast<Frog&>(*pair.first);
