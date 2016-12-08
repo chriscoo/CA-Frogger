@@ -3,16 +3,16 @@
 #include "TextureHolder.h"
 #include "FontHolder.h"
 #include "PlayerControl.h"
-#include <SFML\Graphics\RectangleShape.hpp>
-#include <SFML\Graphics\RenderWindow.hpp>
-#include <SFML\Graphics\View.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 
 namespace GEX {
 
 	GameOverState::GameOverState(StateStack & stack, Context context) : State(stack, context), _GameOverText(),_elapsedTime(sf::Time::Zero)
 	{
 		sf::Font& font = FontHolder::getInstance().get(FontID::Main);
-		sf::Vector2f windowSize(context.window->getView().getSize());
+		sf::Vector2f windowSize(480, 600);
 
 		_GameOverText.setFont(font);
 		if (context.player->getMissionStatus() == missionStatus::Fail)
@@ -23,7 +23,7 @@ namespace GEX {
 		{
 			_GameOverText.setString("MISSION SUCESS");
 		}
-		_GameOverText.setCharacterSize(100);
+		_GameOverText.setCharacterSize(50);
 		centerOrigin(_GameOverText);
 		_GameOverText.setPosition(0.5f * windowSize.x, 0.5f * windowSize.y);
 	}

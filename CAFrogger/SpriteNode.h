@@ -25,6 +25,7 @@ namespace GEX {
 		SpriteNode( sf::Texture&, sf::IntRect);
 		SpriteNode(sf::Texture&);
 		~SpriteNode();
+		
 	private:
 
 		void drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const;

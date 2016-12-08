@@ -1,7 +1,7 @@
 #pragma once
-#include "SFML\Graphics\Sprite.hpp"
-#include "SFML\Graphics\Text.hpp"
-#include "SFML\System.hpp"
+#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Text.hpp"
+#include "SFML/System.hpp"
 namespace GEX {
 	class Animation : public sf::Transformable, public sf::Drawable
 	{

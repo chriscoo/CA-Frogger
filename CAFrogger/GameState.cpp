@@ -37,7 +37,7 @@ namespace GEX {
 
 
 		//check for game over
-		if (!_world.hasAlivePlayer())
+		if (!_world.playerHasLives())
 		{
 			_player.setMissionStatus(missionStatus::Fail);
 			requestStackPush(StateID::GameOver);
@@ -59,17 +59,17 @@ namespace GEX {
 
 		_player.handleEvent(event, command);
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q)
 			requestStackPush(StateID::Pause);
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q)
-		{
-			requestStackPop();
-			requestStackPush(StateID::Menu);
-		}
+		//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q)
+		//{
+		//	requestStackPop();
+		//	requestStackPush(StateID::Menu);
+		//}
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::G)
-			requestStackPush(StateID::Gex);
+		//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::G)
+		//	requestStackPush(StateID::Gex);
 
 		return true;
 	}

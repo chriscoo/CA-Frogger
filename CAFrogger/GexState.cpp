@@ -19,9 +19,9 @@ Additions and modifications are my sole work for prog 1266
 #include "Utility.h"
 #include "TextureHolder.h"
 #include "FontHolder.h"
-#include <SFML\Graphics\RectangleShape.hpp>
-#include <SFML\Graphics\RenderWindow.hpp>
-#include <SFML\Graphics\View.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 
 
 namespace GEX {

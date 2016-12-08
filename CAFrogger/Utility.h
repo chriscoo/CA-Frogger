@@ -32,13 +32,13 @@ namespace GEX {
 
 		int randomInt(int max);
 
-		const float M_PI = 3.14159265f;
-		inline float degreesToRadians(float degress) { return degress*M_PI / 180.f; }
-		inline float radiansToDegress(float radians) { return radians * 180.f / M_PI; }
+		const float PI = 3.14159265f;
+		inline float degreesToRadians(float degress) { return degress*PI / 180.f; }
+		inline float radiansToDegress(float radians) { return radians * 180.f / PI; }
 		inline float sin(float degress) { return std::sin(degreesToRadians(degress)); }
 		inline float cos(float degress) { return std::cos(degreesToRadians(degress)); }
 		inline float arctan2(float opp, float adj) {
-			float result = atan2(opp, adj) * 180 / M_PI;
+			float result = atan2(opp, adj) * 180 / PI;
 			return result;
 		}
 		float length(sf::Vector2f vector);

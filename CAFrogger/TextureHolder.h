@@ -15,7 +15,7 @@ Additions and modifications are my sole work for prog 1266
 
 */
 #pragma once
-#include <SFML\Graphics.hpp>
+#include <SFML/Graphics.hpp>
 #include <memory>
 #include <map>
 namespace GEX

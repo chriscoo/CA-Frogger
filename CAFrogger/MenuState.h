@@ -16,8 +16,8 @@ Additions and modifications are my sole work for prog 1266
 */
 #pragma once
 #include "State.h"
-#include "SFML\Graphics\Sprite.hpp"
-#include "SFML\Graphics\Text.hpp"
+#include "SFML/Graphics/Sprite.hpp"
+#include "SFML/Graphics/Text.hpp"
 #include "CommandQueue.h"
 
 namespace GEX {

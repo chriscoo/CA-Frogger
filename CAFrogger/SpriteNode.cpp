@@ -32,6 +32,7 @@ namespace GEX {
 	SpriteNode::~SpriteNode()
 	{
 	}
+
 	void SpriteNode::drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const
 	{
 		target.draw(_sprite, state);

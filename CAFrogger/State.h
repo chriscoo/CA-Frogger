@@ -16,8 +16,8 @@ Additions and modifications are my sole work for prog 1266
 */
 
 #pragma once
-#include "sfml/System/Time.hpp"
-#include "SFML\Window\Event.hpp"
+#include "SFML/System/Time.hpp"
+#include "SFML/Window/Event.hpp"
 #include <memory>
 #include "StateIdentifiers.h"
 

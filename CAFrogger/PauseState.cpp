@@ -19,9 +19,9 @@ Additions and modifications are my sole work for prog 1266
 #include "Utility.h"
 #include "TextureHolder.h"
 #include "FontHolder.h"
-#include <SFML\Graphics\RectangleShape.hpp>
-#include <SFML\Graphics\RenderWindow.hpp>
-#include <SFML\Graphics\View.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Graphics/View.hpp>
 
 namespace GEX {
 
@@ -38,6 +38,7 @@ namespace GEX {
 
 		_instructionText.setFont(font);
 		_instructionText.setString("(Press BackSpace to return to the main menu) ");
+		_instructionText.setCharacterSize(20);
 		centerOrigin(_instructionText);
 		_instructionText.setPosition(0.5f * viewSize.x, 0.6f * viewSize.y);
 	}

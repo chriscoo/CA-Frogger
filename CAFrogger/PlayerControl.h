@@ -15,7 +15,7 @@ Additions and modifications are my sole work for prog 1266
 
 */
 #pragma once
-#include "SFML\graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include "CommandQueue.h"
 #include <map>
 namespace GEX {
