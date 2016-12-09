@@ -41,6 +41,9 @@ namespace GEX {
 		_soundPlayer(soundPlayer),
 		_playerAircraft(nullptr),
 		_vehicles(),
+		_score(nullptr),
+		_points(0),
+		_highestPos(0),
 		_lane1(_worldView.getSize().x+60, _worldBounds.height - 60),
 		_lane2(_worldBounds.left, _worldBounds.height - 100),
 		_lane3(_worldView.getSize().x+60, _worldBounds.height - 140),
@@ -55,7 +58,7 @@ namespace GEX {
 
 		buildScene();
 
-
+		
 		//sets the view to the bottom since we will scroll upwards
 		//_worldView.setCenter(_spawnPosition);
 
@@ -77,10 +80,12 @@ namespace GEX {
 		resetNPC();
 
 		_sceneGraph.removeWrecks();
+
 		
 		_sceneGraph.update(deltaTime, getCommandQueue());
 		adaptPlayerPosition();
-		
+		checkHighestPos();
+		updateScore();
 	}
 	void World::draw() //creates the view 
 	{
@@ -121,6 +126,10 @@ namespace GEX {
 
 		std::unique_ptr<SoundNode> soundeffectNode(new SoundNode(_soundPlayer));
 		_sceneLayers[Air]->attatchChild(std::move(soundeffectNode));
+
+		std::unique_ptr<TextNode> text(new TextNode("Score: "));
+		_score = text.get();
+		_sceneLayers[Background]->attatchChild(std::move(text));
 
 		//frog
 		std::unique_ptr<Frog> frog(new Frog());
@@ -297,6 +306,8 @@ namespace GEX {
 		{
 			//triggers the lives to redraw themselves with 1 less life
 			_playerAircraft->die();
+			_playerAircraft->setPosition(_spawnPosition);
+			_playerAircraft->setVelocity(0, 0);//removes the travel speed he gets from the log/turtle
 		}
 		if (_playerAircraft->getPosition().y > StartofRiver)//resets his velocity if he goes back onto land
 			_playerAircraft->setVelocity(0, 0);
@@ -439,6 +450,20 @@ namespace GEX {
 		});
 
 		_queue.push(command);
+	}
+	void World::updateScore()
+	{
+		//if(_playerAircraft->getPosition().y<_highestPos)
+		//_score->setText("SCORE: " + (_points + 20));
+		//
+		//_score->setPosition(220.f, 5.f);
+	}
+	float World::checkHighestPos()
+	{
+		//if (_playerAircraft->getPosition().y > _highestPos)
+		//	_highestPos = _playerAircraft->getPosition().y;
+	   //
+		return 0.0;
 	}
 	bool matchesCategories(SceneNode::pair& colliders, Category::type type1, Category::type type2)
 {
