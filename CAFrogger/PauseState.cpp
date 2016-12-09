@@ -32,7 +32,7 @@ namespace GEX {
 
 		_pausedText.setFont(font);
 		_pausedText.setString("Game Paused");
-		_pausedText.setCharacterSize(70);
+		_pausedText.setCharacterSize(65);
 		centerOrigin(_pausedText);
 		_pausedText.setPosition(0.5f * viewSize.x, 0.4f * viewSize.y);
 

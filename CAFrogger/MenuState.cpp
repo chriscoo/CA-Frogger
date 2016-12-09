@@ -99,8 +99,8 @@ namespace GEX {
 			if (_optionsIndex > 0)
 				_optionsIndex--;
 			else
-				_optionsIndex = 0;
-				//_optionsIndex = _options.size()-1;
+				_optionsIndex++;
+				
 
 			updateOptionText();
 		}
