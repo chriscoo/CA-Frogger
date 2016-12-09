@@ -43,7 +43,7 @@ namespace GEX {
 		_vehicles(),
 		_score(nullptr),
 		_points(0),
-		_highestPos(0),
+		_highestPos(_worldBounds.height),
 		_lane1(_worldView.getSize().x+60, _worldBounds.height - 60),
 		_lane2(_worldBounds.left, _worldBounds.height - 100),
 		_lane3(_worldView.getSize().x+60, _worldBounds.height - 140),
@@ -57,7 +57,7 @@ namespace GEX {
 	{
 
 		buildScene();
-
+		_score->setPosition(220.f, 5.f);
 		
 		//sets the view to the bottom since we will scroll upwards
 		//_worldView.setCenter(_spawnPosition);
@@ -84,8 +84,9 @@ namespace GEX {
 		
 		_sceneGraph.update(deltaTime, getCommandQueue());
 		adaptPlayerPosition();
-		checkHighestPos();
 		updateScore();
+		checkHighestPos();
+	
 	}
 	void World::draw() //creates the view 
 	{
@@ -453,17 +454,21 @@ namespace GEX {
 	}
 	void World::updateScore()
 	{
-		//if(_playerAircraft->getPosition().y<_highestPos)
-		//_score->setText("SCORE: " + (_points + 20));
-		//
-		//_score->setPosition(220.f, 5.f);
+		if (_playerAircraft->getPosition().y < _highestPos)
+		{
+			
+			_score->setText("SCORE: " + std::to_string(_points));
+			_points = _points + 20;
+		}
+		
+		
 	}
 	float World::checkHighestPos()
 	{
-		//if (_playerAircraft->getPosition().y > _highestPos)
-		//	_highestPos = _playerAircraft->getPosition().y;
-	   //
-		return 0.0;
+		if (_playerAircraft->getPosition().y < _highestPos)
+			_highestPos = _playerAircraft->getPosition().y;
+	
+		return _highestPos;
 	}
 	bool matchesCategories(SceneNode::pair& colliders, Category::type type1, Category::type type2)
 {
