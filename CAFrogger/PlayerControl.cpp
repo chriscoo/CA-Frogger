@@ -20,15 +20,15 @@ Additions and modifications are my sole work for prog 1266
 #include "Category.h"
 
 namespace GEX {
-	struct FrogMover{ //to move the aircraftk
+	struct FrogMover{ //to move the frog
 	
-		FrogMover(float vx, float vy, float rotation) : velocity(vx, vy), rotation(rotation){}
+		FrogMover(float dx, float dy, float rotation) : direction(dx, dy), rotation(rotation){}
 		void operator() (Frog& frog, sf::Time) const {
-			frog.setPosition(frog.getPosition().x + velocity.x, frog.getPosition().y + velocity.y);
+			frog.setPosition(frog.getPosition().x + direction.x, frog.getPosition().y + direction.y);
 			frog.setRotation(rotation);
 		}
 
-		sf::Vector2f velocity;
+		sf::Vector2f direction;
 		float rotation;
 	
 	};

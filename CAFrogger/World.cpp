@@ -39,16 +39,16 @@ namespace GEX {
 		_scrollSpeed(0),
 		_queue(),
 		_soundPlayer(soundPlayer),
-		_playerAircraft(nullptr),
+		_playerFrog(nullptr),
 		_vehicles(),
 		_score(nullptr),
 		_points(0),
 		_highestPos(_worldBounds.height),
-		_lane1(_worldView.getSize().x+60, _worldBounds.height - 60),
+		_lane1(_worldView.getSize().x + 60, _worldBounds.height - 60),
 		_lane2(_worldBounds.left, _worldBounds.height - 100),
-		_lane3(_worldView.getSize().x+60, _worldBounds.height - 140),
+		_lane3(_worldView.getSize().x + 60, _worldBounds.height - 140),
 		_lane4(_worldBounds.left, _worldBounds.height - 180),
-		_lane5(_worldView.getSize().x+60, _worldBounds.height - 220),
+		_lane5(_worldView.getSize().x + 60, _worldBounds.height - 220),
 		_river1(_worldView.getSize().x + 60, _worldBounds.height - 300),
 		_river2(_worldBounds.left, _worldBounds.height - 340),
 		_river3(_worldBounds.left, _worldBounds.height - 380),
@@ -58,7 +58,7 @@ namespace GEX {
 
 		buildScene();
 		_score->setPosition(220.f, 5.f);
-		
+
 		//sets the view to the bottom since we will scroll upwards
 		//_worldView.setCenter(_spawnPosition);
 
@@ -70,7 +70,7 @@ namespace GEX {
 	}
 	void World::update(sf::Time deltaTime)
 	{
-		
+
 		while (!_queue.isEmpty())
 		{
 			_sceneGraph.onCommand(_queue.pop(), sf::Time::Zero);
@@ -81,16 +81,16 @@ namespace GEX {
 
 		_sceneGraph.removeWrecks();
 
-		
+
 		_sceneGraph.update(deltaTime, getCommandQueue());
 		adaptPlayerPosition();
 		updateScore();
 		checkHighestPos();
-	
+
 	}
 	void World::draw() //creates the view 
 	{
-		
+
 		_window.setView(_worldView);
 		_window.draw(_sceneGraph);
 	}
@@ -111,19 +111,19 @@ namespace GEX {
 			_sceneGraph.attatchChild(std::move(layer));
 		}
 
-		
+
 
 		//background
 		sf::Texture& texture = TextureHolder::getInstance().get(TextureID::Background);
 		sf::IntRect textureRect(0, 0, 480, 600);
-		
+
 		//add background to sceneGraph
 		std::unique_ptr<SpriteNode> background(new SpriteNode(texture, textureRect));
 		background->setPosition(_worldView.getViewport().left, _worldView.getViewport().top);
 		_sceneLayers[Background]->attatchChild(std::move(background));
 
 
-		
+
 
 		std::unique_ptr<SoundNode> soundeffectNode(new SoundNode(_soundPlayer));
 		_sceneLayers[Air]->attatchChild(std::move(soundeffectNode));
@@ -133,30 +133,34 @@ namespace GEX {
 		_sceneLayers[Background]->attatchChild(std::move(text));
 
 		//frog
-		std::unique_ptr<Frog> frog(new Frog());
-		frog->setPosition(_spawnPosition);
 
-		
+
+
 		createCars();
 		createLogs();
 		createTurtles();
-		
 
-		_playerAircraft = frog.get();
+
+		std::unique_ptr<Frog> frog(new Frog());
+		frog->setPosition(_spawnPosition);
+
+
+
+		_playerFrog = frog.get();
 		_sceneLayers[Air]->attatchChild(std::move(frog));
 	}
 	bool World::playerHasLives()
 	{
-		if (_playerAircraft->getLives() == 0)
+		if (_playerFrog->getLives() == 0)
 			return false;
 		else
 			return true;
 	}
 	bool World::hasAlivePlayer() const
 	{
-		
-			return true;
-		
+
+		return true;
+
 	}
 	bool World::hasReachedFinish() const
 	{
@@ -173,7 +177,7 @@ namespace GEX {
 	}
 	void World::updateSounds()
 	{
-		_soundPlayer.setListenerPosition(_playerAircraft->getWorldPosition());
+		_soundPlayer.setListenerPosition(_playerFrog->getWorldPosition());
 		_soundPlayer.removeStoppedSounds();
 	}
 	void World::spawnEnemies() //creates the enemy planes 
@@ -211,53 +215,53 @@ namespace GEX {
 	}
 	void World::guideMissiles()
 	{
-	//	//sets up a list of all enemy planes
-	//	Command enemyCollector;
-	//	enemyCollector.category = Category::EnemyAircraft;
-	//	enemyCollector.action = derivedAction<Plane>([this](Plane& enemy, sf::Time dt)
-	//	{	
-	//	if (!enemy.isDestroyed()) //checks if it is destroyed. if not then puts it into the list
-	//	{
-	//		this->_activeEnemies.push_back(&enemy);
-	//	}
-	//
-	//	});
-	//
-	//	Command missileBuilder;
-	//	missileBuilder.category = Category::AlliedProjectile;
-	//	missileBuilder.action = derivedAction<Projectile>([this](Projectile& missile, sf::Time dt)
-	//	{
-	//		//ignore bullets
-	//		if (!missile.isGuided())
-	//			return;
-	//
-	//		float minDistance = std::numeric_limits<float>::max();
-	//
-	//		Plane* closestEnemy = nullptr;
-	//		for (Plane* enemy : this->_activeEnemies)
-	//		{
-	//			float enemyDistance = distance(missile, *enemy);
-	//
-	//			if (enemyDistance < minDistance) {
-	//				closestEnemy = enemy;
-	//				minDistance = enemyDistance;
-	//			}
-	//		}
-	//		if (closestEnemy)
-	//		{
-	//			missile.guideTowards(closestEnemy->getWorldPosition());
-	//		}
-	//
-	//		
-	//
-	//
-	//});
-	//	//push the commands onto the queue
-	//	_activeEnemies.clear();
-	//	_queue.push(enemyCollector);
-	//	_queue.push(missileBuilder);
+		//	//sets up a list of all enemy planes
+		//	Command enemyCollector;
+		//	enemyCollector.category = Category::EnemyAircraft;
+		//	enemyCollector.action = derivedAction<Plane>([this](Plane& enemy, sf::Time dt)
+		//	{	
+		//	if (!enemy.isDestroyed()) //checks if it is destroyed. if not then puts it into the list
+		//	{
+		//		this->_activeEnemies.push_back(&enemy);
+		//	}
+		//
+		//	});
+		//
+		//	Command missileBuilder;
+		//	missileBuilder.category = Category::AlliedProjectile;
+		//	missileBuilder.action = derivedAction<Projectile>([this](Projectile& missile, sf::Time dt)
+		//	{
+		//		//ignore bullets
+		//		if (!missile.isGuided())
+		//			return;
+		//
+		//		float minDistance = std::numeric_limits<float>::max();
+		//
+		//		Plane* closestEnemy = nullptr;
+		//		for (Plane* enemy : this->_activeEnemies)
+		//		{
+		//			float enemyDistance = distance(missile, *enemy);
+		//
+		//			if (enemyDistance < minDistance) {
+		//				closestEnemy = enemy;
+		//				minDistance = enemyDistance;
+		//			}
+		//		}
+		//		if (closestEnemy)
+		//		{
+		//			missile.guideTowards(closestEnemy->getWorldPosition());
+		//		}
+		//
+		//		
+		//
+		//
+		//});
+		//	//push the commands onto the queue
+		//	_activeEnemies.clear();
+		//	_queue.push(enemyCollector);
+		//	_queue.push(missileBuilder);
 
-}
+	}
 	void World::handleCollisions()
 	{
 		std::set<SceneNode::pair> collisionPairs;
@@ -273,58 +277,58 @@ namespace GEX {
 				auto& player = static_cast<Frog&>(*pair.first);
 				auto& enemy = static_cast<Vehicle&>(*pair.second);
 				//triggers the lives to redraw themselves with 1 less life
-				
+
 				//destrays then respawns the frog at the spawn point
 				player.die();
 				player.setPosition(_spawnPosition);
 				player.setVelocity(0, 0);//removes the travel speed he gets from the log/turtle
-				
+
 
 			}
-		
-				if (matchesCategories(pair, Category::Frog, Category::Log))//if the player collides with a log so he travels with it
-					{
-						auto& player = static_cast<Frog&>(*pair.first);
-						auto& log = static_cast<Log&>(*pair.second);
-					
-						player.setVelocity(log.getVelocity());
-						isInRiver = false;
-					}
-				else if (matchesCategories(pair, Category::Frog, Category::Turtle))//if the player collides with a turtle so he travels with it
-				{
-					auto& player = static_cast<Frog&>(*pair.first);
-					auto& turtle = static_cast<Turtle&>(*pair.second);
-				
-					player.setVelocity(turtle.getVelocity());
-					isInRiver = false;
-				}
-		
-	}
-		
-		
-		
-		if (_playerAircraft->getPosition().y < StartofRiver && isInRiver == true)//if you go into the river and are not on a log/tutle
+
+			if (matchesCategories(pair, Category::Frog, Category::Log))//if the player collides with a log so he travels with it
+			{
+				auto& player = static_cast<Frog&>(*pair.first);
+				auto& log = static_cast<Log&>(*pair.second);
+
+				player.setVelocity(log.getVelocity());
+				isInRiver = false;
+			}
+			if (matchesCategories(pair, Category::Frog, Category::Turtle))//if the player collides with a turtle so he travels with it
+			{
+				auto& player = static_cast<Frog&>(*pair.first);
+				auto& turtle = static_cast<Turtle&>(*pair.second);
+
+				player.setVelocity(turtle.getVelocity());
+				isInRiver = false;
+			}
+
+		}
+
+
+
+		if (_playerFrog->getPosition().y < StartofRiver && isInRiver == true)//if you go into the river and are not on a log/tutle
 		{
 			//triggers the lives to redraw themselves with 1 less life
-			_playerAircraft->die();
-			_playerAircraft->setPosition(_spawnPosition);
-			_playerAircraft->setVelocity(0, 0);//removes the travel speed he gets from the log/turtle
+			_playerFrog->die();
+			_playerFrog->setPosition(_spawnPosition);
+			_playerFrog->setVelocity(0, 0);//removes the travel speed he gets from the log/turtle
 		}
-		if (_playerAircraft->getPosition().y > StartofRiver)//resets his velocity if he goes back onto land
-			_playerAircraft->setVelocity(0, 0);
-		
+		if (_playerFrog->getPosition().y > StartofRiver)//resets his velocity if he goes back onto land
+			_playerFrog->setVelocity(0, 0);
+
 	}
 	void World::destroyEntitiesOutsideWorldView()
 	{
-	//	Command command;
-	//	command.category = Category::Projectile | Category::EnemyAircraft;
-	//	command.action = derivedAction<Entity>([this](Entity& e, sf::Time) 
-	//	{
-	//		if (!getBattleFieldBounds().intersects(e.getBoundingRect()))
-	//			e.distroy();
-	//	});
-	//
-	//	_queue.push(command);
+		//	Command command;
+		//	command.category = Category::Projectile | Category::EnemyAircraft;
+		//	command.action = derivedAction<Entity>([this](Entity& e, sf::Time) 
+		//	{
+		//		if (!getBattleFieldBounds().intersects(e.getBoundingRect()))
+		//			e.distroy();
+		//	});
+		//
+		//	_queue.push(command);
 	}
 	void World::adaptPlayerPosition()
 	{
@@ -332,81 +336,81 @@ namespace GEX {
 		sf::FloatRect viewBounds = getViewBounds();
 		const float borderDistance = 20.f;
 
-		sf::Vector2f position = _playerAircraft->getPosition();
+		sf::Vector2f position = _playerFrog->getPosition();
 		position.x = std::max(position.x, viewBounds.left + borderDistance);
 		position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
 		position.y = std::max(position.y, viewBounds.top + borderDistance);
 		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
-		_playerAircraft->setPosition(position);
+		_playerFrog->setPosition(position);
 	}
 	void World::addEnemy(SpawnPoint point) //puts the planes onto the vetor
-{
-	point.x = _spawnPosition.x + point.x;
-	point.y = _spawnPosition.y - point.y;
-	_enemySpawnPoints.push_back(point);
-}
+	{
+		point.x = _spawnPosition.x + point.x;
+		point.y = _spawnPosition.y - point.y;
+		_enemySpawnPoints.push_back(point);
+	}
 	void World::createFrog()
 	{
-		_playerAircraft->distroy();
+		_playerFrog->distroy();
 		std::unique_ptr<Frog> frog(new Frog());
 		frog->setPosition(_spawnPosition);
 
-		_playerAircraft = frog.get();
-		_playerAircraft->setVelocity(0, 0); //removes the travel speed he gets from the log/turtle
+		_playerFrog = frog.get();
+		_playerFrog->setVelocity(0, 0); //removes the travel speed he gets from the log/turtle
 		_sceneLayers[Air]->attatchChild(std::move(frog));
 	}
 	void World::createCars()
-{
-	std::unique_ptr<Vehicle> carr(new Vehicle(Vehicle::Type::CarR));
-	carr->setPosition(_lane1);
-	carr->setSpawn(_lane1);
-	_sceneLayers[Air]->attatchChild(std::move(carr));
+	{
+		std::unique_ptr<Vehicle> carr(new Vehicle(Vehicle::Type::CarR));
+		carr->setPosition(_lane1);
+		carr->setSpawn(_lane1);
+		_sceneLayers[Air]->attatchChild(std::move(carr));
 
-	std::unique_ptr<Vehicle> carr2(new Vehicle(Vehicle::Type::CarR));
-	carr2->setPosition(_lane1.x+75, _lane1.y);
-	carr2->setSpawn(carr2->getPosition());
-	_sceneLayers[Air]->attatchChild(std::move(carr2));
+		std::unique_ptr<Vehicle> carr2(new Vehicle(Vehicle::Type::CarR));
+		carr2->setPosition(_lane1.x + 75, _lane1.y);
+		carr2->setSpawn(carr2->getPosition());
+		_sceneLayers[Air]->attatchChild(std::move(carr2));
 
-	std::unique_ptr<Vehicle> carl(new Vehicle(Vehicle::Type::CarL));
-	carl->setPosition(_lane2);
-	carl->setSpawn(_lane2);
-	_sceneLayers[Air]->attatchChild(std::move(carl));
+		std::unique_ptr<Vehicle> carl(new Vehicle(Vehicle::Type::CarL));
+		carl->setPosition(_lane2);
+		carl->setSpawn(_lane2);
+		_sceneLayers[Air]->attatchChild(std::move(carl));
 
-	std::unique_ptr<Vehicle> carl2(new Vehicle(Vehicle::Type::CarL));
-	carl2->setPosition(_lane2.x + 100, _lane2.y);
-	carl2->setSpawn(carl2->getPosition());
-	_sceneLayers[Air]->attatchChild(std::move(carl2));
+		std::unique_ptr<Vehicle> carl2(new Vehicle(Vehicle::Type::CarL));
+		carl2->setPosition(_lane2.x + 100, _lane2.y);
+		carl2->setSpawn(carl2->getPosition());
+		_sceneLayers[Air]->attatchChild(std::move(carl2));
 
-	std::unique_ptr<Vehicle> rc(new Vehicle(Vehicle::Type::RaceCar));
-	rc->setPosition(_lane3);
-	rc->setSpawn(_lane3);
-	_sceneLayers[Air]->attatchChild(std::move(rc));
+		std::unique_ptr<Vehicle> rc(new Vehicle(Vehicle::Type::RaceCar));
+		rc->setPosition(_lane3);
+		rc->setSpawn(_lane3);
+		_sceneLayers[Air]->attatchChild(std::move(rc));
 
-	std::unique_ptr<Vehicle> rc2(new Vehicle(Vehicle::Type::RaceCar));
-	rc2->setPosition(_lane3.x + 80, _lane3.y);
-	rc2->setSpawn(rc2->getPosition());
-	_sceneLayers[Air]->attatchChild(std::move(rc2));
+		std::unique_ptr<Vehicle> rc2(new Vehicle(Vehicle::Type::RaceCar));
+		rc2->setPosition(_lane3.x + 80, _lane3.y);
+		rc2->setSpawn(rc2->getPosition());
+		_sceneLayers[Air]->attatchChild(std::move(rc2));
 
-	std::unique_ptr<Vehicle> trac(new Vehicle(Vehicle::Type::Tractor));
-	trac->setPosition(_lane4);
-	trac->setSpawn(_lane4);
-	_sceneLayers[Air]->attatchChild(std::move(trac));
+		std::unique_ptr<Vehicle> trac(new Vehicle(Vehicle::Type::Tractor));
+		trac->setPosition(_lane4);
+		trac->setSpawn(_lane4);
+		_sceneLayers[Air]->attatchChild(std::move(trac));
 
-	std::unique_ptr<Vehicle> trac2(new Vehicle(Vehicle::Type::Tractor));
-	trac2->setPosition(_lane4.x + 130, _lane4.y);
-	trac2->setSpawn(trac2->getPosition());
-	_sceneLayers[Air]->attatchChild(std::move(trac2));
+		std::unique_ptr<Vehicle> trac2(new Vehicle(Vehicle::Type::Tractor));
+		trac2->setPosition(_lane4.x + 130, _lane4.y);
+		trac2->setSpawn(trac2->getPosition());
+		_sceneLayers[Air]->attatchChild(std::move(trac2));
 
-	std::unique_ptr<Vehicle> truck(new Vehicle(Vehicle::Type::Truck));
-	truck->setPosition(_lane5);
-	truck->setSpawn(_lane5);
-	_sceneLayers[Air]->attatchChild(std::move(truck));
+		std::unique_ptr<Vehicle> truck(new Vehicle(Vehicle::Type::Truck));
+		truck->setPosition(_lane5);
+		truck->setSpawn(_lane5);
+		_sceneLayers[Air]->attatchChild(std::move(truck));
 
-	std::unique_ptr<Vehicle> truck2(new Vehicle(Vehicle::Type::Truck));
-	truck2->setPosition(_lane5.x + 130, _lane5.y);
-	truck2->setSpawn(truck2->getPosition());
-	_sceneLayers[Air]->attatchChild(std::move(truck2));
-}
+		std::unique_ptr<Vehicle> truck2(new Vehicle(Vehicle::Type::Truck));
+		truck2->setPosition(_lane5.x + 130, _lane5.y);
+		truck2->setSpawn(truck2->getPosition());
+		_sceneLayers[Air]->attatchChild(std::move(truck2));
+	}
 	void World::createLogs()
 	{
 
@@ -414,12 +418,12 @@ namespace GEX {
 		logS->setPosition(_river2);
 		logS->setSpawn(_river2);
 		_sceneLayers[Air]->attatchChild(std::move(logS));
-		
+
 		std::unique_ptr<Log> logL(new Log(Log::Type::Long));
 		logL->setPosition(_river3);
 		logL->setSpawn(_river3);
 		_sceneLayers[Air]->attatchChild(std::move(logL));
-		
+
 		std::unique_ptr<Log> logS2(new Log(Log::Type::Short));
 		logS2->setPosition(_river5);
 		logS2->setSpawn(_river5);
@@ -447,43 +451,43 @@ namespace GEX {
 		{
 			if (!getBattleFieldBounds().intersects(e.getBoundingRect()))
 				e.setPosition(e.getSpawn());
-			
+
 		});
 
 		_queue.push(command);
 	}
 	void World::updateScore()
 	{
-		if (_playerAircraft->getPosition().y < _highestPos)
+		if (_playerFrog->getPosition().y < _highestPos)
 		{
-			
+
 			_score->setText("SCORE: " + std::to_string(_points));
 			_points = _points + 20;
 		}
-		
-		
+
+
 	}
 	float World::checkHighestPos()
 	{
-		if (_playerAircraft->getPosition().y < _highestPos)
-			_highestPos = _playerAircraft->getPosition().y;
-	
+		if (_playerFrog->getPosition().y < _highestPos)
+			_highestPos = _playerFrog->getPosition().y;
+
 		return _highestPos;
 	}
 	bool matchesCategories(SceneNode::pair& colliders, Category::type type1, Category::type type2)
-{
-	unsigned int category1 = colliders.first->getCategory();
-	unsigned int category2 = colliders.second->getCategory();
-
-	if (type1 & category1 && type2 & category2)
-		return true;
-
-	else if (type1 & category2 && type2 & category1)
 	{
-		std::swap(colliders.first, colliders.second);
-		return true;
+		unsigned int category1 = colliders.first->getCategory();
+		unsigned int category2 = colliders.second->getCategory();
+
+		if (type1 & category1 && type2 & category2)
+			return true;
+
+		else if (type1 & category2 && type2 & category1)
+		{
+			std::swap(colliders.first, colliders.second);
+			return true;
+		}
+		else
+			return false;
 	}
-	else
-		return false;
-}
 }

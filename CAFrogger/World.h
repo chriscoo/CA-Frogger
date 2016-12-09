@@ -91,7 +91,7 @@ namespace GEX {
 		sf::FloatRect						_worldBounds;
 		sf::Vector2f						_spawnPosition;
 		float								_scrollSpeed;
-		Frog*								_playerAircraft;
+		Frog*								_playerFrog;
 		TextNode*							_score;
 		std::vector<SpawnPoint>				_enemySpawnPoints;
 		std::vector<Plane*>					_activeEnemies;
