@@ -70,7 +70,7 @@ namespace GEX {
 		return data;
 	}
 	//planes
-	std::map<Plane::Type, AircraftData> GEX::InitializeAircraftData()
+	std::map<Plane::Type, AircraftData> InitializeAircraftData()
 	{
 		std::map<Plane::Type, AircraftData> data;
 
@@ -109,7 +109,7 @@ namespace GEX {
 	}
 
 	//projectiles
-	std::map<Projectile::Type, ProjectileData> GEX::InitializeProjectileData()
+	std::map<Projectile::Type, ProjectileData> InitializeProjectileData()
 	{
 		std::map<Projectile::Type, ProjectileData> data;
 
