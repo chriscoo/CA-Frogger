@@ -39,8 +39,8 @@ namespace GEX {
 		//check for game over
 		if (!_world.playerHasLives())
 		{
-			_player.setMissionStatus(missionStatus::Fail);
-			requestStackPush(StateID::GameOver);
+		//	_player.setMissionStatus(missionStatus::Fail);
+		//	requestStackPush(StateID::GameOver);
 		}
 		else if (_world.hasReachedFinish())
 		{

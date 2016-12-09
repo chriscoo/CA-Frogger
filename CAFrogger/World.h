@@ -79,7 +79,8 @@ namespace GEX {
 		void createLogs();
 		void createTurtles();
 		void resetNPC();
-
+		void updateScore();
+		float checkHighestPos();
 	private:
 		sf::RenderWindow&					_window;
 		sf::View							_worldView;
@@ -91,14 +92,14 @@ namespace GEX {
 		sf::Vector2f						_spawnPosition;
 		float								_scrollSpeed;
 		Frog*								_playerAircraft;
-		
+		TextNode*							_score;
 		std::vector<SpawnPoint>				_enemySpawnPoints;
 		std::vector<Plane*>					_activeEnemies;
 
 		std::vector<Vehicle*>				_vehicles;
+		float								_highestPos;
 		
-		
-
+		int									_points;
 		sf::Vector2f 						_lane1;
 		sf::Vector2f 						_lane2;
 		sf::Vector2f 						_lane3;

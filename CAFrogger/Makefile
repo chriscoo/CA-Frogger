@@ -3,7 +3,7 @@
 #
 
 CPP = g++
-CPPFLAGS = -std=c++11 -MMD
+CPPFLAGS = -std=c++11 -MMD -L/usr/local/SFML/lib -I/usr/local/SFML/include
 
 SRCS := $(wildcard *.cpp)
 OBJS := $(SRCS:%.cpp=%.o)
