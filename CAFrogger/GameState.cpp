@@ -59,7 +59,7 @@ namespace GEX {
 
 		_player.handleEvent(event, command);
 
-		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q)
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape)
 			requestStackPush(StateID::Pause);
 
 		//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Q)
@@ -68,8 +68,8 @@ namespace GEX {
 		//	requestStackPush(StateID::Menu);
 		//}
 
-		//if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::G)
-		//	requestStackPush(StateID::Gex);
+		if (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::G)
+			requestStackPush(StateID::Gex);
 
 		return true;
 	}
