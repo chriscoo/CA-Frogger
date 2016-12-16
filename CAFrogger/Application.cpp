@@ -40,6 +40,7 @@ namespace GEX {
 		TextureHolder::getInstance().load(TextureID::Background, "Media/Textures/background.png");
 		TextureHolder::getInstance().load(TextureID::Atlas, "Media/Textures/FroggerAtlas.png");
 
+
 		_statText.setFont(FontHolder::getInstance().get(FontID::Main));
 		_statText.setPosition(5.f, 5.f);
 		_statText.setCharacterSize(10u);
