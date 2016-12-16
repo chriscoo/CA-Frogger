@@ -38,43 +38,35 @@ namespace GEX {
 						~World();
 		void			update(sf::Time deltaTime);
 		void			draw();
-		//Plane*			getPlayerAircraft() { return _playerAircraft; }
 		CommandQueue&	getCommandQueue();
 
 		void			buildScene();
 		
 		bool			playerHasLives();
 		bool			hasAlivePlayer() const;
-		bool			hasReachedFinish() const;
 
 	private:
-
-		sf::FloatRect getViewBounds() const;
-		sf::FloatRect getBattleFieldBounds() const;
-
-		
-		
-		
-		
-		
-		void handleCollisions();
-	
-		void adaptPlayerPosition();
 		enum _Layers
 		{
 			Background,
 			Air,
 			LayerCount
 		};
-		
-		
-		void createFrog();
-		void createCars();
-		void createLogs();
-		void createTurtles();
-		void resetNPC();
-		void updateScore();
-		float checkHighestPos();
+
+
+	private:
+		sf::FloatRect	getViewBounds() const;
+		sf::FloatRect	getBattleFieldBounds() const;
+		void			handleCollisions();
+		void			adaptPlayerPosition();
+
+		void			createCars();
+		void			createLogs();
+		void			createTurtles();
+		void			resetNPC();
+
+		void			updateScore();
+		float			checkHighestPos();
 	private:
 		sf::RenderWindow&					_window;
 		sf::View							_worldView;

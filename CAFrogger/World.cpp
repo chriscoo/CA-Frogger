@@ -33,17 +33,20 @@ namespace GEX {
 		_worldBounds(-250.f, 0.f, _worldView.getSize().x + 500, _worldView.getSize().y),
 		_spawnPosition(_worldView.getSize().x / 2.f, _worldBounds.height - 20),
 		_queue(),
-		
 		_playerFrog(nullptr),
 		_vehicles(),
 		_score(nullptr),
 		_points(0),
 		_highestPos(_worldBounds.height),
+
+		//coords for each of the lanes
 		_lane1(_worldView.getSize().x + 60, _worldBounds.height - 60),
 		_lane2(_worldBounds.left, _worldBounds.height - 100),
 		_lane3(_worldView.getSize().x + 60, _worldBounds.height - 140),
 		_lane4(_worldBounds.left, _worldBounds.height - 180),
 		_lane5(_worldView.getSize().x + 60, _worldBounds.height - 220),
+
+		//coords for each of the lanes
 		_river1(_worldView.getSize().x + 60, _worldBounds.height - 300),
 		_river2(_worldBounds.left, _worldBounds.height - 340),
 		_river3(_worldBounds.left, _worldBounds.height - 380),
@@ -54,8 +57,6 @@ namespace GEX {
 		buildScene();
 		_score->setPosition(220.f, 5.f);
 
-		//sets the view to the bottom since we will scroll upwards
-		//_worldView.setCenter(_spawnPosition);
 
 	}
 
@@ -71,16 +72,16 @@ namespace GEX {
 			_sceneGraph.onCommand(_queue.pop(), sf::Time::Zero);
 		}
 
-		handleCollisions();
-		resetNPC();
+		handleCollisions(); //checks for collisions
+		resetNPC(); //puts all non player characters (logs turtles and cars) back to their starting points when they reach the end of the screen
 
 		_sceneGraph.removeWrecks();
 
 
 		_sceneGraph.update(deltaTime, getCommandQueue());
-		adaptPlayerPosition();
-		updateScore();
-		checkHighestPos();
+		adaptPlayerPosition(); //makes sure the player doesnt go out of bounds
+		updateScore();//updates the score
+		checkHighestPos(); //marks the current highest point so teh player doesnt get points for hopping back and forth
 
 	}
 	void World::draw() //creates the view 
@@ -117,12 +118,10 @@ namespace GEX {
 		background->setPosition(_worldView.getViewport().left, _worldView.getViewport().top);
 		_sceneLayers[Background]->attatchChild(std::move(background));
 
-
+		//Add score to the top of the screen
 		std::unique_ptr<TextNode> text(new TextNode("Score: "));
 		_score = text.get();
 		_sceneLayers[Background]->attatchChild(std::move(text));
-
-		//frog
 
 
 
@@ -130,16 +129,13 @@ namespace GEX {
 		createLogs();
 		createTurtles();
 
-
+		//frog
 		std::unique_ptr<Frog> frog(new Frog());
 		frog->setPosition(_spawnPosition);
-
-
-
 		_playerFrog = frog.get();
 		_sceneLayers[Air]->attatchChild(std::move(frog));
 	}
-	bool World::playerHasLives()
+	bool World::playerHasLives() // checks if the player still has lives
 	{
 		if (_playerFrog->getLives() == 0)
 			return false;
@@ -152,10 +148,7 @@ namespace GEX {
 		return true;
 
 	}
-	bool World::hasReachedFinish() const
-	{
-		return false;
-	}
+
 	sf::FloatRect World::getViewBounds() const //gets the windows size
 	{
 		sf::Vector2f rect(0, 0);
@@ -237,17 +230,8 @@ namespace GEX {
 		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
 		_playerFrog->setPosition(position);
 	}
-	void World::createFrog()
-	{
-		_playerFrog->distroy();
-		std::unique_ptr<Frog> frog(new Frog());
-		frog->setPosition(_spawnPosition);
 
-		_playerFrog = frog.get();
-		_playerFrog->setVelocity(0, 0); //removes the travel speed he gets from the log/turtle
-		_sceneLayers[Air]->attatchChild(std::move(frog));
-	}
-	void World::createCars()
+	void World::createCars() //creates all the cars
 	{
 		std::unique_ptr<Vehicle> carr(new Vehicle(Vehicle::Type::CarR));
 		carr->setPosition(_lane1);
@@ -299,7 +283,7 @@ namespace GEX {
 		truck2->setSpawn(truck2->getPosition());
 		_sceneLayers[Air]->attatchChild(std::move(truck2));
 	}
-	void World::createLogs()
+	void World::createLogs()//creates all the logs
 	{
 
 		std::unique_ptr<Log> logS(new Log(Log::Type::Short));
@@ -317,7 +301,7 @@ namespace GEX {
 		logS2->setSpawn(_river5);
 		_sceneLayers[Air]->attatchChild(std::move(logS2));
 	}
-	void World::createTurtles()
+	void World::createTurtles() //creates all the turtles
 	{
 		std::unique_ptr<Turtle> turtleS(new Turtle(Turtle::Type::Turtle2));
 		turtleS->setPosition(_river1);
@@ -333,6 +317,7 @@ namespace GEX {
 	}
 	void World::resetNPC()
 	{
+		//checks if a cra out out of bounds and if it is, reset it to its initial spawn point
 		Command command;
 		command.category = Category::Car | Category::Log | Category::Turtle;
 		command.action = derivedAction<Entity>([this](Entity& e, sf::Time)
@@ -344,7 +329,7 @@ namespace GEX {
 
 		_queue.push(command);
 	}
-	void World::updateScore()
+	void World::updateScore()//updates the textnode that holds the score
 	{
 		if (_playerFrog->getPosition().y < _highestPos)
 		{
@@ -355,7 +340,7 @@ namespace GEX {
 
 
 	}
-	float World::checkHighestPos()
+	float World::checkHighestPos()//checks for the farthest point the player has reached so it cna tell if you get more points or not by hopping forward
 	{
 		if (_playerFrog->getPosition().y < _highestPos)
 			_highestPos = _playerFrog->getPosition().y;

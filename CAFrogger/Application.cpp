@@ -53,7 +53,7 @@ namespace GEX {
 		sf::Clock clock;
 		sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
-		while (_window.isOpen())
+		while (_window.isOpen()) // one loop is one cycle
 		{
 			sf::Time dt = clock.restart();
 			timeSinceLastUpdate += dt;
@@ -76,7 +76,7 @@ namespace GEX {
 		}
 	}
 
-	void GEX::Application::processInputs()
+	void GEX::Application::processInputs() //processes the users inputs
 	{
 		sf::Event event;
 		while (_window.pollEvent(event))
@@ -87,11 +87,11 @@ namespace GEX {
 				_window.close();
 		}
 	}
-	void Application::update(sf::Time dt)
+	void Application::update(sf::Time dt) //does a cascading update for each node on the stack
 	{
 		_stateStack.update(dt);
 	}
-	void Application::render()
+	void Application::render() //draws everything
 	{
 		_window.clear();
 		_stateStack.draw();
@@ -102,7 +102,7 @@ namespace GEX {
 
 		_window.display();
 	}
-	void Application::updateStats(sf::Time dt)
+	void Application::updateStats(sf::Time dt) //shows the frames per second in the top corner
 	{
 
 		static int numFrames = 0;

@@ -37,16 +37,12 @@ namespace GEX {
 
 
 		//check for game over
-		if (!_world.playerHasLives())
+		if (!_world.playerHasLives()) // if the player runs out of lives
 		{
-		//	_player.setMissionStatus(missionStatus::Fail);
-		//	requestStackPush(StateID::GameOver);
-		}
-		else if (_world.hasReachedFinish())
-		{
-			_player.setMissionStatus(missionStatus::Sucess);
+			_player.setMissionStatus(missionStatus::Fail);
 			requestStackPush(StateID::GameOver);
 		}
+
 		CommandQueue& commands = _world.getCommandQueue();
 		_player.handleRealTimeInput(commands);
 
