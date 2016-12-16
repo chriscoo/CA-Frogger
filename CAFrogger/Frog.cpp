@@ -23,7 +23,6 @@ Additions and modifications are my sole work for prog 1266
 #include <iostream>
 #include <cassert>
 #include "SoundNode.h"
-//#include "JsonFrameParser.hpp"
 
 namespace GEX {
 	Frog::Frog() : Entity(1), _player(TextureHolder::getInstance().get(TextureID::Atlas)), _life(TextureHolder::getInstance().get(TextureID::Atlas), sf::IntRect(395,100,39,40)), _directionIndex(0), _travelDistance(0), _isMarkedForRemoval(false), _playedMovementSound(true), _playedDeathSound(true), _state(), _lives(3)
