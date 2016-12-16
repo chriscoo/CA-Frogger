@@ -47,10 +47,10 @@ namespace GEX {
 		std::map<Turtle::Type, TurtleData> data;
 
 		data[Turtle::Type::Turtle2].speed = -60.f;
-		data[Turtle::Type::Turtle2].textureRect = sf::IntRect(125,1,65,26);
+		data[Turtle::Type::Turtle2].textureRect = sf::IntRect(125, 1, 65, 26);
 
 		data[Turtle::Type::Turtle3].speed = -60.f;
-		data[Turtle::Type::Turtle3].textureRect = sf::IntRect(192,1,99,26);
+		data[Turtle::Type::Turtle3].textureRect = sf::IntRect(192, 1, 99, 26);
 
 
 		return data;
@@ -69,103 +69,5 @@ namespace GEX {
 
 		return data;
 	}
-	//planes
-	std::map<Plane::Type, AircraftData> InitializeAircraftData()
-	{
-		std::map<Plane::Type, AircraftData> data;
 
-
-		data[Plane::Type::RAPTOR].hitpoints = 20;
-		data[Plane::Type::RAPTOR].speed = 80;
-		data[Plane::Type::RAPTOR].texture = TextureID::RAPTOR;
-		data[Plane::Type::RAPTOR].fireInterval = sf::seconds(4);
-		data[Plane::Type::RAPTOR].textureRect = sf::IntRect(144, 0, 84, 64);
-
-		data[Plane::Type::RAPTOR].directions.push_back(Direction(80.f, 80.f));
-		data[Plane::Type::RAPTOR].directions.push_back(Direction(-80.f, 100.f));
-		data[Plane::Type::RAPTOR].directions.push_back(Direction(80.f, 80.f));
-
-		data[Plane::Type::AVENGER].hitpoints = 40;
-		data[Plane::Type::AVENGER].speed = 50;
-		data[Plane::Type::AVENGER].texture = TextureID::AVENGER;
-		data[Plane::Type::AVENGER].fireInterval = sf::seconds(4);
-		data[Plane::Type::AVENGER].textureRect = sf::IntRect(228, 0, 60, 59);
-
-		data[Plane::Type::AVENGER].directions.push_back(Direction(-70.f, 150.f));
-		data[Plane::Type::AVENGER].directions.push_back(Direction(0.f, 25.f));
-		data[Plane::Type::AVENGER].directions.push_back(Direction(150.f, 80.f));
-
-		data[Plane::Type::EAGLE].hitpoints = 100;
-		data[Plane::Type::EAGLE].speed = 200;
-		data[Plane::Type::EAGLE].texture = TextureID::AIRPLANE;
-		data[Plane::Type::EAGLE].fireInterval = sf::seconds(1);
-		data[Plane::Type::EAGLE].textureRect = sf::IntRect(0, 0, 48, 64);
-
-
-		return data;
-	}
-	Direction::Direction(float a, float d) : angle(a), distance(d)
-	{
-	}
-
-	//projectiles
-	std::map<Projectile::Type, ProjectileData> InitializeProjectileData()
-	{
-		std::map<Projectile::Type, ProjectileData> data;
-
-		data[Projectile::Type::EnemyBullet].damage = 100;
-		data[Projectile::Type::EnemyBullet].speed = 200;
-		data[Projectile::Type::EnemyBullet].texture = TextureID::BULLET;
-		data[Projectile::Type::EnemyBullet].textureRect = sf::IntRect(178, 64, 3, 14);
-
-		data[Projectile::Type::AlliedBullet].damage = 100;
-		data[Projectile::Type::AlliedBullet].speed = 200;
-		data[Projectile::Type::AlliedBullet].texture = TextureID::BULLET;
-		data[Projectile::Type::AlliedBullet].textureRect = sf::IntRect(178, 64, 3, 14);
-
-		data[Projectile::Type::Missle].damage = 100;
-		data[Projectile::Type::Missle].speed = 450;
-		data[Projectile::Type::Missle].approachRate = 1000.f;
-		data[Projectile::Type::Missle].texture = TextureID::MISSLE;
-		data[Projectile::Type::Missle].textureRect = sf::IntRect(160, 64, 15, 32);
-
-		return data;
-	}
-
-	//pick ups
-	std::map<Pickup::Type, PickupData> InitializePickupData()
-	{
-		std::map<Pickup::Type, PickupData> data;
-
-		data[Pickup::Type::FireRate].texture = TextureID::FireRate;
-		data[Pickup::Type::FireRate].action = [](Plane& a) {a.increaseFireRate(); };
-		data[Pickup::Type::FireRate].textureRect = sf::IntRect(120,	64,	40,	40);
-
-		data[Pickup::Type::FireSpread].texture = TextureID::FireSpread;
-		data[Pickup::Type::FireSpread].action = [](Plane& a) {a.increadFireSpread(); };
-		data[Pickup::Type::FireSpread].textureRect = sf::IntRect(80,	64,	40,	40);
-
-		data[Pickup::Type::HealthRefill].texture = TextureID::HealthRefill;
-		data[Pickup::Type::HealthRefill].action = [](Plane& a) {a.repair(25); };
-		data[Pickup::Type::HealthRefill].textureRect = sf::IntRect(0, 64, 40, 40);
-
-		data[Pickup::Type::MissileRefill].texture = TextureID::MissileRefill;
-		data[Pickup::Type::MissileRefill].action = [](Plane& a) {a.collecMissiles(3); };
-		data[Pickup::Type::MissileRefill].textureRect = sf::IntRect(40, 64, 40, 40);
-
-		return data;
-	}
-	std::map<Particle::Type, ParticleData> InitializeParticleData()
-	{
-		std::map<Particle::Type, ParticleData> data;
-
-		//data[Particle::Type::Propellant].texture = TextureID::PARTICLE;
-		data[Particle::Type::Propellant].lifeTime = sf::seconds(0.6f);
-		data[Particle::Type::Propellant].color = sf::Color(255, 255, 50);
-
-		//	data[Particle::Type::Smoke].texture = TextureID::PARTICLE;
-		data[Particle::Type::Smoke].lifeTime = sf::seconds(4.f);
-		data[Particle::Type::Smoke].color = sf::Color(50,50,50);
-		return data;
-	}
 }

@@ -17,8 +17,6 @@ Additions and modifications are my sole work for prog 1266
 #pragma once
 #include "PlayerControl.h"
 #include "StateStack.h"
-#include "MusicPlayer.h"
-#include "SoundPlayer.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/System/Time.hpp>
 namespace GEX {
@@ -46,8 +44,6 @@ namespace GEX {
 
 		PlayerControl		_player;
 		StateStack _stateStack;
-		MusicPlayer _music;
-		SoundPlayer _soundPlayer;
 
 		sf::Font _font;
 		sf::Text _statText;

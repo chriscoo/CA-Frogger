@@ -25,14 +25,11 @@ Additions and modifications are my sole work for prog 1266
 #include "SoundNode.h"
 
 namespace GEX {
-	Frog::Frog() : Entity(1), _player(TextureHolder::getInstance().get(TextureID::Atlas)), _life(TextureHolder::getInstance().get(TextureID::Atlas), sf::IntRect(395,100,39,40)), _directionIndex(0), _travelDistance(0), _isMarkedForRemoval(false), _playedMovementSound(true), _playedDeathSound(true), _state(), _lives(3)
+	Frog::Frog() : Entity(1), _player(TextureHolder::getInstance().get(TextureID::Atlas)), _life(TextureHolder::getInstance().get(TextureID::Atlas), sf::IntRect(395,100,39,40)), _isMarkedForRemoval(false), _state(), _lives(3)
 	{
 		sf::IntRect rect(62,0,30,22);
 		_player.setTextureRect(rect);
-		centerOrigin(_player);
-
-		
-		
+		centerOrigin(_player);	
 
 	}
 	unsigned int Frog::getCategory() const
@@ -66,10 +63,6 @@ namespace GEX {
 		return isDestroyed();
 	}
 
-	float Frog::getMaxSpeed() const
-	{
-		return 40.f;
-	}
 
 	sf::FloatRect Frog::getBoundingRect() const
 	{

@@ -25,22 +25,22 @@ namespace GEX {
 	}
 	void EmitterNode::updateCurrent(sf::Time dt, CommandQueue & commands)
 	{
-		if (_particleSystem)
-			emitParticles(dt);
-		else 
-		{
-			auto finder = [this](ParticleNode& node, sf::Time) 
-			{  
-				if (node.getParticleType() == _type)
-					_particleSystem = &node;
-			};
-
-			Command command;
-			command.category = Category::ParticleSystem;
-			command.action = derivedAction<ParticleNode>(finder);
-
-			commands.push(command);
-		}
+		//if (_particleSystem)
+		//	emitParticles(dt);
+		//else 
+		//{
+		//	auto finder = [this](ParticleNode& node, sf::Time) 
+		//	{  
+		//		if (node.getParticleType() == _type)
+		//			_particleSystem = &node;
+		//	};
+		//
+		//	Command command;
+		//	command.category = Category::ParticleSystem;
+		//	command.action = derivedAction<ParticleNode>(finder);
+		//
+		//	commands.push(command);
+		//}
 		
 	}
 	void EmitterNode::emitParticles(sf::Time dt)

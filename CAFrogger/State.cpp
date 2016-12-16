@@ -19,7 +19,7 @@ Additions and modifications are my sole work for prog 1266
 #include "stateStack.h"
 
 namespace GEX {
-	State::Context::Context(sf::RenderWindow& window, PlayerControl& player, MusicPlayer& music, SoundPlayer& soundeffect) : window(&window), player(&player), music(&music), soundEffects(&soundeffect) {}
+	State::Context::Context(sf::RenderWindow& window, PlayerControl& player) : window(&window), player(&player) {}
 
 	State::State(StateStack& stack, Context context) : _stack(&stack), _context(context) {}
 

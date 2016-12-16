@@ -26,8 +26,6 @@ namespace GEX {
 			Turtle = 1 << 3,
 			Car = 1 << 4,
 			LandingZone = 1 << 5,
-			ParticleSystem = 1 << 6,
-			SoundEffect = 1 << 7,
 			
 
 			ThingsPlayerCollidesWith = Log | Turtle | LandingZone | Car,

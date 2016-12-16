@@ -22,19 +22,19 @@ Additions and modifications are my sole work for prog 1266
 #include <vector>
 #include <algorithm>
 #include <array>
-#include "Plane.h"
+
 #include "Vehicle.h"
-#include "SoundPlayer.h"
+
 #include "SpriteNode.h"
 namespace GEX {
 
 	class Frog;
-	
+	class TextNode;
 	class World
 	{
 	public:
 
-		explicit		World(sf::RenderWindow& window, SoundPlayer& soundPlayer);
+		explicit		World(sf::RenderWindow& window);
 						~World();
 		void			update(sf::Time deltaTime);
 		void			draw();
@@ -52,13 +52,13 @@ namespace GEX {
 		sf::FloatRect getViewBounds() const;
 		sf::FloatRect getBattleFieldBounds() const;
 
-		void updateSounds();
-		void spawnEnemies();
-		void addEnemies();
-		void addEnemy(Plane::Type type, float relx, float rely);
-		void guideMissiles();
+		
+		
+		
+		
+		
 		void handleCollisions();
-		void destroyEntitiesOutsideWorldView();
+	
 		void adaptPlayerPosition();
 		enum _Layers
 		{
@@ -66,14 +66,8 @@ namespace GEX {
 			Air,
 			LayerCount
 		};
-		struct SpawnPoint{
-			SpawnPoint(Plane::Type _type, float _x, float _y) : type(_type), x(_x), y(_y) {}
-			Plane::Type		type;
-			float			x;
-			float			y;
-
-		};
-		void addEnemy(SpawnPoint point);
+		
+		
 		void createFrog();
 		void createCars();
 		void createLogs();
@@ -85,16 +79,13 @@ namespace GEX {
 		sf::RenderWindow&					_window;
 		sf::View							_worldView;
 		SceneNode							_sceneGraph;
-		SoundPlayer&						_soundPlayer;
 		std::array<SceneNode*, LayerCount>	_sceneLayers;
 		CommandQueue						_queue;
 		sf::FloatRect						_worldBounds;
 		sf::Vector2f						_spawnPosition;
-		float								_scrollSpeed;
 		Frog*								_playerFrog;
 		TextNode*							_score;
-		std::vector<SpawnPoint>				_enemySpawnPoints;
-		std::vector<Plane*>					_activeEnemies;
+		
 
 		std::vector<Vehicle*>				_vehicles;
 		float								_highestPos;

@@ -15,30 +15,25 @@ Additions and modifications are my sole work for prog 1266
 
 */
 #include "World.h"
-#include "Plane.h"
-#include "Pickup.h"
 #include "TextureHolder.h"
+#include "TextNode.h"
 #include "Frog.h"
 #include "Turtle.h"
-#include "ParticleNode.h"
 #include "SpriteNode.h"
-#include "SoundPlayer.h"
-#include "SoundNode.h"
 #include "Log.h"
 #include "Vehicle.h"
 namespace GEX {
 
 	bool matchesCategories(SceneNode::pair& colliders, Category::type type1, Category::type type2);
-	World::World(sf::RenderWindow& window, SoundPlayer& soundPlayer) :
+	World::World(sf::RenderWindow& window) :
 		_window(window),
 		_worldView(window.getDefaultView()),
 		_sceneGraph(),
 		_sceneLayers(),
 		_worldBounds(-250.f, 0.f, _worldView.getSize().x + 500, _worldView.getSize().y),
 		_spawnPosition(_worldView.getSize().x / 2.f, _worldBounds.height - 20),
-		_scrollSpeed(0),
 		_queue(),
-		_soundPlayer(soundPlayer),
+		
 		_playerFrog(nullptr),
 		_vehicles(),
 		_score(nullptr),
@@ -123,11 +118,6 @@ namespace GEX {
 		_sceneLayers[Background]->attatchChild(std::move(background));
 
 
-
-
-		std::unique_ptr<SoundNode> soundeffectNode(new SoundNode(_soundPlayer));
-		_sceneLayers[Air]->attatchChild(std::move(soundeffectNode));
-
 		std::unique_ptr<TextNode> text(new TextNode("Score: "));
 		_score = text.get();
 		_sceneLayers[Background]->attatchChild(std::move(text));
@@ -175,93 +165,8 @@ namespace GEX {
 	{
 		return _worldBounds;
 	}
-	void World::updateSounds()
-	{
-		_soundPlayer.setListenerPosition(_playerFrog->getWorldPosition());
-		_soundPlayer.removeStoppedSounds();
-	}
-	void World::spawnEnemies() //creates the enemy planes 
-	{
-		while (!_enemySpawnPoints.empty() && _enemySpawnPoints.back().y > getBattleFieldBounds().top)
-		{
-			auto spawn = _enemySpawnPoints.back();
-			std::unique_ptr<Plane> enemy(new Plane(spawn.type));
-			enemy->setPosition(spawn.x, spawn.y);
-			enemy->setRotation(180.f);
-			_sceneLayers[Air]->attatchChild(std::move(enemy));
-
-			_enemySpawnPoints.pop_back();
-
-
-		}
-	}
-	void World::addEnemies() //adds all the planes onto a vector and then sorts them from biggest to smallest so we just need to take it off the back instead of going through the vector to find the smallest
-	{
-		addEnemy(Plane::Type::RAPTOR, -250, 200);
-		addEnemy(Plane::Type::RAPTOR, +250, 200);
-		addEnemy(Plane::Type::RAPTOR, -150, 450);
-		addEnemy(Plane::Type::RAPTOR, 0, 450);
-		addEnemy(Plane::Type::RAPTOR, -250, 550);
-		//addEnemy(Plane::Type::RAPTOR, -50, 700);
-		//addEnemy(Plane::Type::RAPTOR, -150, 700);
-
-		std::sort(_enemySpawnPoints.begin(), _enemySpawnPoints.end(), [](SpawnPoint lhs, SpawnPoint rhs) {return lhs.y < rhs.y; });
-
-	}
-
-	void World::addEnemy(Plane::Type type, float relx, float rely)
-	{
-		addEnemy(SpawnPoint(type, relx, rely));
-	}
-	void World::guideMissiles()
-	{
-		//	//sets up a list of all enemy planes
-		//	Command enemyCollector;
-		//	enemyCollector.category = Category::EnemyAircraft;
-		//	enemyCollector.action = derivedAction<Plane>([this](Plane& enemy, sf::Time dt)
-		//	{	
-		//	if (!enemy.isDestroyed()) //checks if it is destroyed. if not then puts it into the list
-		//	{
-		//		this->_activeEnemies.push_back(&enemy);
-		//	}
-		//
-		//	});
-		//
-		//	Command missileBuilder;
-		//	missileBuilder.category = Category::AlliedProjectile;
-		//	missileBuilder.action = derivedAction<Projectile>([this](Projectile& missile, sf::Time dt)
-		//	{
-		//		//ignore bullets
-		//		if (!missile.isGuided())
-		//			return;
-		//
-		//		float minDistance = std::numeric_limits<float>::max();
-		//
-		//		Plane* closestEnemy = nullptr;
-		//		for (Plane* enemy : this->_activeEnemies)
-		//		{
-		//			float enemyDistance = distance(missile, *enemy);
-		//
-		//			if (enemyDistance < minDistance) {
-		//				closestEnemy = enemy;
-		//				minDistance = enemyDistance;
-		//			}
-		//		}
-		//		if (closestEnemy)
-		//		{
-		//			missile.guideTowards(closestEnemy->getWorldPosition());
-		//		}
-		//
-		//		
-		//
-		//
-		//});
-		//	//push the commands onto the queue
-		//	_activeEnemies.clear();
-		//	_queue.push(enemyCollector);
-		//	_queue.push(missileBuilder);
-
-	}
+		
+	
 	void World::handleCollisions()
 	{
 		std::set<SceneNode::pair> collisionPairs;
@@ -318,18 +223,7 @@ namespace GEX {
 			_playerFrog->setVelocity(0, 0);
 
 	}
-	void World::destroyEntitiesOutsideWorldView()
-	{
-		//	Command command;
-		//	command.category = Category::Projectile | Category::EnemyAircraft;
-		//	command.action = derivedAction<Entity>([this](Entity& e, sf::Time) 
-		//	{
-		//		if (!getBattleFieldBounds().intersects(e.getBoundingRect()))
-		//			e.distroy();
-		//	});
-		//
-		//	_queue.push(command);
-	}
+	
 	void World::adaptPlayerPosition()
 	{
 		// Keep player's position inside the screen bounds, at least borderDistance units from the border
@@ -342,12 +236,6 @@ namespace GEX {
 		position.y = std::max(position.y, viewBounds.top + borderDistance);
 		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
 		_playerFrog->setPosition(position);
-	}
-	void World::addEnemy(SpawnPoint point) //puts the planes onto the vetor
-	{
-		point.x = _spawnPosition.x + point.x;
-		point.y = _spawnPosition.y - point.y;
-		_enemySpawnPoints.push_back(point);
 	}
 	void World::createFrog()
 	{

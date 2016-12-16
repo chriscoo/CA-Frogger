@@ -31,7 +31,7 @@ Additions and modifications are my sole work for prog 1266
 namespace GEX {
 	const sf::Time Application::timePerFrame = sf::seconds(1.f / 60.f);
 
-	Application::Application() : _window(sf::VideoMode(480, 600), "states", sf::Style::Close), _player(), _stateStack(State::Context(_window, _player, _music, _soundPlayer)), _statText()
+	Application::Application() : _window(sf::VideoMode(480, 600), "states", sf::Style::Close), _player(), _stateStack(State::Context(_window, _player)), _statText()
 	{
 		_window.setKeyRepeatEnabled(false);
 

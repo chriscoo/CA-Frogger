@@ -36,21 +36,16 @@ namespace GEX {
 		void			drawCurrent(sf::RenderTarget & target, sf::RenderStates state) const; //draws the current instance of plane
 		void			updateCurrent(sf::Time dt, CommandQueue& commands);
 		void			die();
-		//void			playLocalSound(CommandQueue& commands, SoundEffectID effect);
 		bool			isMarkedForRemoval() const override;
-		float			getMaxSpeed() const; //gets the planes speed from he datatable
+		
 		sf::FloatRect	getBoundingRect() const override; //gets the hitbox
 		int				getLives();
 
 	private:
 		State			_state;
 		sf::Sprite		_player; //the controllable plane the user uses
-		mutable SpriteNode		_life;
-		int				_directionIndex;
-		float			_travelDistance;
+		mutable SpriteNode		_life; //sprites for the life counter. mutable so we can change it in the draw method
 		bool			_isMarkedForRemoval;
-		bool			_playedMovementSound;
-		bool			_playedDeathSound;
 		int				_lives;
 		
 		std::vector<sf::IntRect> animation;
